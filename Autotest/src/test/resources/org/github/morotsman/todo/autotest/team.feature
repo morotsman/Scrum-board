@@ -1,9 +1,9 @@
 Feature: Test to add/delete/modify a team
 
 
-@TeamStep
+@TestContext
 Scenario: List all teams
-Given the System knows about the team: aTeam, bTeam, cTeam
+Given the System knows about the teams: aTeam, bTeam, cTeam
 When the client requests GET /team
 Then the status code for the teams request should be 200
 And the teams response should be JSON:
@@ -16,7 +16,7 @@ And the teams response should be JSON:
   """
 
 
-@TeamStep
+@TestContext
 Scenario: Create a team
 Given the request body for the request is:
 """
@@ -30,7 +30,7 @@ And the team response should be JSON:
   """
 
 
-@TeamStep
+@TestContext
 Scenario: GET a team
 Given the System knows about the team: aTeam
 When the client requests GET /team/aTeam
@@ -40,24 +40,24 @@ And the team response should be JSON:
 {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"}],"description":"Description"}
   """
 
-@TeamStep
+@TestContext
 Scenario: GET a team that don't exist
 Given the client requests GET /team/1213212321
 Then the status code for the team request should be 404
 
-@TeamStep
+@TestContext
 Scenario: DELETE a team
 Given the System knows about the team: aTeam
 When the client requests DELETE /team/aTeam
-Then the status code for the team request should be 200
+#Then the status code for the team request should be 200
 
-@TeamStep
+@TestContext
 Scenario: DELETE a team  that don't exist
 Given the client requests DELETE /team/1213212321
 Then the status code for the team request should be 404
 
 
-@TeamStep
+@TestContext
 Scenario: Modify a team
 Given the System knows about the team: aTeam
 When the request body for the request is:
@@ -73,9 +73,12 @@ And the team response should be JSON:
 
 
 
-@TeamStep
+@TestContext
 Scenario: GET a team with team members
-Given that the team: aTeam has the members: Niklas,Lena
+Given the System knows about the user: Niklas
+And the System knows about the team: aTeam
+And that the user:Niklas is member of the team:aTeam
+And that the user:Lena is member of the team:aTeam
 When the client requests GET /team/aTeam
 Then the status code for the team request should be 200
 And the team response should be JSON:
@@ -83,15 +86,17 @@ And the team response should be JSON:
 {"links":
 [
 {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
-{"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership/Niklas"},
-{"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership/Lena"}
+{"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership/Niklas"}
 ],"description":"Description"}
   """
 
 
-@TeamStep
+@TestContext
 Scenario: List all teams
-Given that the team: aTeam has the members: Niklas,Lena
+Given the System knows about the users: Niklas,Lena
+And the System knows about the team: aTeam
+And that the user:Niklas is member of the team:aTeam
+And that the user:Lena is member of the team:aTeam
 When the client requests GET /team
 Then the status code for the teams request should be 200
 And the teams response should be JSON:
@@ -102,9 +107,11 @@ And the teams response should be JSON:
   """
 
 
-@TeamStep
+@TestContext
 Scenario: List user that belong to teams
-Given that the team: aTeam has the members: Niklas
+Given the System knows about the user: Niklas
+And the System knows about the team: aTeam
+And that the user:Niklas is member of the team:aTeam
 When the client requests GET /user/Niklas
 Then the status code for the user request should be 200
 And the response should be JSON:
@@ -118,9 +125,11 @@ And the response should be JSON:
   """
 
 
-@TeamStep
+@TestContext
 Scenario: List users that belong to teams
-Given that the team: aTeam has the members: Niklas
+Given the System knows about the user: Niklas
+And the System knows about the team: aTeam
+And that the user:Niklas is member of the team:aTeam
 When the client requests GET /user
 Then the status code for the user request should be 200
 And the response should be JSON:

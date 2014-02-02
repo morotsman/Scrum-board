@@ -1,39 +1,45 @@
 package org.github.morotsman.todo.autotest;
 
 
-import cucumber.annotation.After;
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
-import org.github.morotsman.todo.autotest.util.RestHelperImpl;
+import org.github.morotsman.todo.autotest.util.RestHelper;
 import org.github.morotsman.todo.autotest.util.TestContext;
-import org.github.morotsman.todo.web.dto.TeamDTO;
+import org.github.morotsman.todo.web.dto.UserDTO;
 import org.junit.Assert;
 import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class UserSteps {
 
     private static final String BASE_URL = "http://localhost:8080/todo/services/v1/user/";
 
-    private RestHelperImpl<String> userHelperImpl = new RestHelperImpl<String>(String.class);
+    private RestHelper<UserDTO> userHelperImpl = TestContext.instance().getUserHelperImpl();
 
     private ResponseEntity<String> response;
-    private Set<String> userToDelete = new HashSet<String>();
 
-    @Given("^the System knows about the users:(.*)$")
-    public void that_users_exists(String users) {
+
+    @Given("^the System knows about the user: (.*)$")
+    public void that_user_exists(String user)  {
+        if(!StringUtils.hasLength(user)){
+            return;
+        }
+        Assert.assertEquals("Could not create user " + user,201, userHelperImpl.putResource(BASE_URL + user, null).getStatusCode().value());
+    }
+
+
+    @Given("^the System knows about the users: (.*)$")
+    public void that_users_exists(String users)  {
         if(!StringUtils.hasLength(users)){
             return;
         }
         for(String user : users.split(",")){
-            Assert.assertEquals("Could not create user " + user,201, userHelperImpl.putResource(BASE_URL + user,null).getStatusCode().value());
-            userToDelete.add(BASE_URL + user);
+            that_user_exists(user);
         }
     }
 
@@ -48,20 +54,18 @@ public class UserSteps {
     }
 
     @When("^the client requests PUT /user/(.*)$")
-    public void executing_PUT_user(String userName) {
-        response = userHelperImpl.putResource(BASE_URL+userName,null);
-        userToDelete.add(BASE_URL+userName);
+    public void executing_PUT_user(String userName) throws IOException {
+        response = userHelperImpl.putResource(BASE_URL + userName);
     }
 
     @When("^the client requests DELETE /user/(.*)")
     public void the_client_requests_DELETE_user(String userName) {
-        response =  userHelperImpl.deleteResource(BASE_URL+userName);
-        userToDelete.remove(BASE_URL+userName);
+        response =  userHelperImpl.deleteResource(BASE_URL + userName);
     }
 
     @When("^the client requests GET /user/(.*)")
     public void the_client_requests_GET_user(String userName) {
-        response = userHelperImpl.getResource(BASE_URL+userName);
+        response = userHelperImpl.getResource(BASE_URL + userName);
     }
 
     @Then("^the status code for the user request should be (\\d+)$")
@@ -78,12 +82,6 @@ public class UserSteps {
         Assert.assertEquals("Expected the status code to be " + expected, expected, actual);
     }
 
-    @After("@UserStep")
-    public void tearDown(){
-        for(String user: userToDelete){
-            Assert.assertEquals("Expected the user to be deleted.", 200, userHelperImpl.deleteResource(user).getStatusCode().value());
-        }
-    }
 
 
 }

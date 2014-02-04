@@ -12,7 +12,7 @@ And the membership response should be JSON:
 {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/theTeam/membership/Niklas"},
 {"rel":"team","href":"http://localhost:8080/todo/services/v1/team/theTeam"},
 {"rel":"user","href":"http://localhost:8080/todo/services/v1/user/Niklas"}
-],"dateAdded":"2014-01-27"}
+],"teamName":"theTeam","userName":"Niklas"}
 """
 
 @TestContext
@@ -69,7 +69,7 @@ And the membership response should be JSON:
 {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/theTeam/membership/Niklas"},
 {"rel":"team","href":"http://localhost:8080/todo/services/v1/team/theTeam"},
 {"rel":"user","href":"http://localhost:8080/todo/services/v1/user/Niklas"}
-],"dateAdded":"2014-01-27"}
+],"teamName":"theTeam","userName":"Niklas"}
 """
 
 
@@ -85,6 +85,30 @@ Scenario: GET information about a membership team is non existing
 Given the System knows about the user: Niklas
 When the client request information about a membership with GET /team/NonExisting/membership/Niklas
 Then the status code for the membership request should be 404
+
+
+@TestContext
+Scenario: List all memberships for a team
+Given the System knows about the user: Niklas
+And the System knows about the team: theTeam
+And that the user:Niklas is member of the team:theTeam
+When the client request information about memberships with GET /team/theTeam/membership
+Then the status code for the memberships request should be 200
+And the memberships response should be JSON:
+"""
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/theTeam/membership"}],
+    "memberships":[
+        {
+            "links":[
+                {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/theTeam/membership/Niklas"},
+                {"rel":"team","href":"http://localhost:8080/todo/services/v1/team/theTeam"},
+                {"rel":"user","href":"http://localhost:8080/todo/services/v1/user/Niklas"}
+            ],
+            "teamName":"theTeam","userName":"Niklas"
+        }
+     ]
+}
+"""
 
 
 

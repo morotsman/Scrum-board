@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -25,7 +26,8 @@ public class Team {
 
 
     @OneToMany(mappedBy = "team")
-    private Set<Sprint> sprints = new HashSet<Sprint>();
+    @org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    private Set<Sprint> sprints = new TreeSet<Sprint>();
 
     @Id
     @GeneratedValue

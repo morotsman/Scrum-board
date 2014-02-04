@@ -9,13 +9,13 @@ And the response should be JSON:
   """
 {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],
 "users":[
-    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Beata"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},{"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Beata"}],
+    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Beata"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
     "userName":"Beata"},
-    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Hektor"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},{"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Hektor"}],
+    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Hektor"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
     "userName":"Hektor"},
-    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Lena"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},{"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Lena"}],
+    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Lena"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
     "userName":"Lena"},
-    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},{"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Niklas"}],
+    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
     "userName":"Niklas"}]}
 """
 
@@ -34,7 +34,7 @@ When the client requests PUT /user/Niklas
 Then the status code for the user request should be 201
 And the response should be JSON:
   """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},{"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Niklas"}],"userName":"Niklas"}
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas"}
   """
 
 @TestContext
@@ -62,12 +62,45 @@ When the client requests GET /user/Niklas
 Then the status code for the user request should be 200
 And the response should be JSON:
   """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},{"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Niklas"}],"userName":"Niklas"}
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas"}
   """
 
 @TestContext
 Scenario: Get a user that don't exist
 When the client requests GET /user/Niklas
 Then the status code for the user request should be 404
+
+@TestContext
+Scenario: List user that belong to teams
+Given the System knows about the user: Niklas
+And the System knows about the team: aTeam
+And that the user:Niklas is member of the team:aTeam
+When the client requests GET /user/Niklas
+Then the status code for the user request should be 200
+And the response should be JSON:
+  """
+{"links":
+[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},
+{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},
+{"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership/Niklas"}],
+"userName":"Niklas"}
+  """
+
+
+@TestContext
+Scenario: List users that belong to teams
+Given the System knows about the user: Niklas
+And the System knows about the team: aTeam
+And that the user:Niklas is member of the team:aTeam
+When the client requests GET /user
+Then the status code for the user request should be 200
+And the response should be JSON:
+  """
+{"links":
+[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],
+"users":[
+    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},
+    {"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas"}]}
+  """
 
 

@@ -53,7 +53,6 @@ public class UserController {
         result.setUserName(user.getName());
         result.add(linkTo(methodOn(UserController.class).createUser(user.getName())).withSelfRel());
         result.add(linkTo(methodOn(TeamController.class).findTeams()).withRel("teams"));
-        result.add(linkTo(methodOn(MembershipController.class).createMembership("insertATeamNameHere",user.getName())).withRel("applyForMembership"));  //TODO change to {teamName}
         if(includeMembership){
             for(Membership membership: user.getMemberships()){
                 result.add(linkTo(methodOn(MembershipController.class).getMembership(membership.getTeam().getName(),membership.getUser().getName())).withRel("membership"));

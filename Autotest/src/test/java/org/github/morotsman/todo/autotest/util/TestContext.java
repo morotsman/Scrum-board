@@ -2,14 +2,16 @@ package org.github.morotsman.todo.autotest.util;
 
 
 import org.github.morotsman.todo.web.dto.MembershipDTO;
+import org.github.morotsman.todo.web.dto.SprintDTO;
 import org.github.morotsman.todo.web.dto.TeamDTO;
 import org.github.morotsman.todo.web.dto.UserDTO;
 
 public class TestContext {
 
-    private final ContextAwareRestHelper<UserDTO> userHelperImpl = new ContextAwareRestHelperImpl<UserDTO>(new RestHelperImpl<UserDTO>(), UserDTO.class);
-    private final ContextAwareRestHelper<TeamDTO> teamHelperImpl = new ContextAwareRestHelperImpl<TeamDTO>(new RestHelperImpl<TeamDTO>(),TeamDTO.class);
-    private final ContextAwareRestHelper<MembershipDTO> membershipHelperImpl = new ContextAwareRestHelperImpl<MembershipDTO>(new RestHelperImpl<MembershipDTO>(),MembershipDTO.class);
+    private final HateoasAwareRestHelper<UserDTO> userHelperImpl = new HateoasAwareRestHelperImpl<UserDTO>(new RestHelperImpl<UserDTO>(), UserDTO.class);
+    private final HateoasAwareRestHelper<TeamDTO> teamHelperImpl = new HateoasAwareRestHelperImpl<TeamDTO>(new RestHelperImpl<TeamDTO>(),TeamDTO.class);
+    private final HateoasAwareRestHelper<MembershipDTO> membershipHelperImpl = new HateoasAwareRestHelperImpl<MembershipDTO>(new RestHelperImpl<MembershipDTO>(),MembershipDTO.class);
+    private final HateoasAwareRestHelper<SprintDTO> sprintHelperImpl = new HateoasAwareRestHelperImpl<SprintDTO>(new RestHelperImpl<SprintDTO>(),SprintDTO.class);
 
     private static final TestContext instance = new TestContext();
 
@@ -23,17 +25,22 @@ public class TestContext {
         return userHelperImpl;
     }
 
-    public ContextAwareRestHelper<TeamDTO> getTeamHelperImpl() {
+    public HateoasAwareRestHelper<TeamDTO> getTeamHelperImpl() {
         return teamHelperImpl;
     }
 
-    public ContextAwareRestHelper<MembershipDTO> getMembershipHelperImpl() {
+    public HateoasAwareRestHelper<MembershipDTO> getMembershipHelperImpl() {
         return membershipHelperImpl;
+    }
+
+    public HateoasAwareRestHelper<SprintDTO> getSprintHelperImpl() {
+        return sprintHelperImpl;
     }
 
     public void cleanUp(){
         membershipHelperImpl.cleanUp();
         userHelperImpl.cleanUp();
+        sprintHelperImpl.cleanUp();
         teamHelperImpl.cleanUp();
     }
 

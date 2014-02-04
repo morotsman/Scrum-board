@@ -18,20 +18,5 @@ public class UserDTO extends ResourceSupport{
         this.userName = userName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        UserDTO userDTO = (UserDTO) o;
-
-        if (userName != null ? !userName.equals(userDTO.userName) : userDTO.userName != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return userName != null ? userName.hashCode() : 0;
-    }
 }

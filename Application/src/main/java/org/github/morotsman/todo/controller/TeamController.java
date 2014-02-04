@@ -28,12 +28,10 @@ public class TeamController {
     private TeamDTO toTeamDTO(Team team, boolean withMembership) {
         TeamDTO result = new TeamDTO();
         result.setDescription(team.getDescription());
+        result.setTeamName(team.getName());
         result.add(linkTo(methodOn(TeamController.class).getTeam(team.getName())).withSelfRel());
-        if(withMembership){
-            for(Membership membership: team.getMemberships()){
-                result.add(linkTo(methodOn(MembershipController.class).getMembership(membership.getTeam().getName(),membership.getUser().getName())).withRel("membership"));
-            }
-        }
+        result.add(linkTo(methodOn(MembershipController.class).listMemberships(team.getName())).withRel("membership"));
+        result.add(linkTo(methodOn(SprintController.class).listSprints(team.getName())).withRel("sprint"));
         return result;
     }
 

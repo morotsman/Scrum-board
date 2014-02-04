@@ -7,12 +7,14 @@ public class TeamDTO extends ResourceSupport {
 
 
     private String description;
+    private String teamName;
 
 
     public TeamDTO(){}
 
-    public TeamDTO(String description) {
+    public TeamDTO(String description, String teamName) {
         this.description = description;
+        this.teamName = teamName;
     }
 
 
@@ -24,23 +26,11 @@ public class TeamDTO extends ResourceSupport {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        TeamDTO teamDTO = (TeamDTO) o;
-
-        if (!description.equals(teamDTO.description)) return false;
-
-        return true;
+    public String getTeamName() {
+        return teamName;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + description.hashCode();
-        return result;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

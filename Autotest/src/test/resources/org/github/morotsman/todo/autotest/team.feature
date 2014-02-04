@@ -8,10 +8,34 @@ When the client requests GET /team
 Then the status code for the teams request should be 200
 And the teams response should be JSON:
   """
-{"teams":[{"links":[
-    {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"}],"description":"Description"},
-    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/bTeam"}],"description":"Description"},
-    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/cTeam"}],"description":"Description"}
+{"teams":[
+    {
+        "links":[
+            {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
+            {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
+            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+        ],
+        "description":"Description",
+        "teamName":"aTeam"
+    },
+    {
+        "links":[
+            {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/bTeam"},
+            {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/bTeam/membership"},
+            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/bTeam/sprint"}
+        ],
+        "description":"Description",
+        "teamName":"bTeam"
+    },
+    {
+        "links":[
+            {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/cTeam"},
+            {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/cTeam/membership"},
+            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/cTeam/sprint"}
+        ],
+        "description":"Description",
+        "teamName":"cTeam"
+    }
 ]}
   """
 
@@ -26,7 +50,15 @@ When the client requests PUT /team/aTeam
 Then the status code for the team request should be 201
 And the team response should be JSON:
   """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"}],"description":"Description"}
+{
+    "links":[
+        {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
+        {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
+        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+    ],
+    "description":"Description",
+    "teamName":"aTeam"
+}
   """
 
 
@@ -37,7 +69,14 @@ When the client requests GET /team/aTeam
 Then the status code for the team request should be 200
 And the team response should be JSON:
 """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"}],"description":"Description"}
+{
+    "links":[
+        {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
+        {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
+        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+    ],
+    "description":"Description",
+    "teamName":"aTeam"}
   """
 
 @TestContext
@@ -68,79 +107,26 @@ And the client requests PUT /team/aTeam
 Then the status code for the team request should be 201
 And the team response should be JSON:
 """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"}],"description":"Updated_Description"}
+{
+    "links":[
+        {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
+        {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
+        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+    ],
+    "description":"Updated_Description",
+    "teamName":"aTeam"
+}
   """
 
 
 
-@TestContext
-Scenario: GET a team with team members
-Given the System knows about the user: Niklas
-And the System knows about the team: aTeam
-And that the user:Niklas is member of the team:aTeam
-And that the user:Lena is member of the team:aTeam
-When the client requests GET /team/aTeam
-Then the status code for the team request should be 200
-And the team response should be JSON:
-"""
-{"links":
-[
-{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
-{"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership/Niklas"}
-],"description":"Description"}
-  """
 
 
-@TestContext
-Scenario: List all teams
-Given the System knows about the users: Niklas,Lena
-And the System knows about the team: aTeam
-And that the user:Niklas is member of the team:aTeam
-And that the user:Lena is member of the team:aTeam
-When the client requests GET /team
-Then the status code for the teams request should be 200
-And the teams response should be JSON:
-  """
-{"teams":[{"links":[
-    {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"}],"description":"Description"}
-]}
-  """
 
 
-@TestContext
-Scenario: List user that belong to teams
-Given the System knows about the user: Niklas
-And the System knows about the team: aTeam
-And that the user:Niklas is member of the team:aTeam
-When the client requests GET /user/Niklas
-Then the status code for the user request should be 200
-And the response should be JSON:
-  """
-{"links":
-[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},
-{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},
-{"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Niklas"},
-{"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership/Niklas"}],
-"userName":"Niklas"}
-  """
 
 
-@TestContext
-Scenario: List users that belong to teams
-Given the System knows about the user: Niklas
-And the System knows about the team: aTeam
-And that the user:Niklas is member of the team:aTeam
-When the client requests GET /user
-Then the status code for the user request should be 200
-And the response should be JSON:
-  """
-{"links":
-[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],
-"users":[
-    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},
-    {"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},
-    {"rel":"applyForMembership","href":"http://localhost:8080/todo/services/v1/team/insertATeamNameHere/membership/Niklas"}],"userName":"Niklas"}]}
-  """
+
 
 
 

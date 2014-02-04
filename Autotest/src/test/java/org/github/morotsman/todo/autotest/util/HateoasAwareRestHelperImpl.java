@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContextAwareRestHelperImpl<T extends ResourceSupport> implements ContextAwareRestHelper<T> {
+public class HateoasAwareRestHelperImpl<T extends ResourceSupport> implements HateoasAwareRestHelper<T> {
 
     private final RestHelper<T> subject;
 
@@ -17,11 +17,11 @@ public class ContextAwareRestHelperImpl<T extends ResourceSupport> implements Co
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    private Class<T> clazz;
+    private Class<T> responseClass;
 
-    public ContextAwareRestHelperImpl(RestHelper<T> subject, Class<T> clazz) {
+    public HateoasAwareRestHelperImpl(RestHelper<T> subject, Class<T> responseClass) {
         this.subject = subject;
-        this.clazz = clazz;
+        this.responseClass = responseClass;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ContextAwareRestHelperImpl<T extends ResourceSupport> implements Co
         }
         ResourceSupport resourceSupport = null;
         try {
-            resourceSupport = mapper.readValue(response.getBody(), clazz);
+            resourceSupport = mapper.readValue(response.getBody(), responseClass);
         } catch (IOException e) {
             throw new RuntimeException("Could not access the self ref.");
         }
@@ -58,7 +58,7 @@ public class ContextAwareRestHelperImpl<T extends ResourceSupport> implements Co
         }
         ResourceSupport resourceSupport = null;
         try {
-            resourceSupport = mapper.readValue(response.getBody(), clazz);
+            resourceSupport = mapper.readValue(response.getBody(), responseClass);
         } catch (IOException e) {
             throw new RuntimeException("Could not access the self ref.");
         }

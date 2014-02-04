@@ -49,6 +49,19 @@ public class MembershipServiceImpl implements MembershipService {
         return find(userName,teamName);
     }
 
+    @Transactional
+    @Override
+    public List<Membership> listMemberships(String teamName) {
+        return getMemberships(teamName);
+    }
+
+    private List<Membership> getMemberships(String teamName) {
+        Membership example = new Membership();
+        Team team = teamService.getTeam(teamName);
+        example.setTeam(team);
+        return membershipRepository.findByExample(example);
+    }
+
     @Resource
     public void setMembershipRepository(MembershipRepository membershipRepository) {
         this.membershipRepository = membershipRepository;

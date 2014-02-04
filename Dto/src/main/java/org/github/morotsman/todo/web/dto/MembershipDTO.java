@@ -7,20 +7,30 @@ import java.util.Date;
 
 public class MembershipDTO extends ResourceSupport {
 
-    private Date dateAdded;
+    private String teamName;
+    private String userName;
 
-    public MembershipDTO(Date dateAdded) {
-        this.dateAdded = dateAdded;
+    public MembershipDTO(String teamName, String userName) {
+        this.teamName = teamName;
+        this.userName = userName;
     }
 
     public MembershipDTO() {
     }
 
-    public Date getDateAdded() {
-        return dateAdded;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setDateAdded(Date dateAdded) {
-        this.dateAdded = dateAdded;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

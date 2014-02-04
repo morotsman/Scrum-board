@@ -4,6 +4,7 @@ package org.github.morotsman.todo.autotest;
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
+import cucumber.difflib.StringUtills;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.github.morotsman.todo.autotest.util.RestHelper;
 import org.github.morotsman.todo.autotest.util.RestHelperImpl;
@@ -11,6 +12,7 @@ import org.github.morotsman.todo.autotest.util.TestContext;
 import org.github.morotsman.todo.web.dto.MembershipDTO;
 import org.junit.Assert;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -63,13 +65,7 @@ public class MembershipSteps {
 
     @Then("^the membership response should be JSON:$")
     public void the_membership_response_should_be_JSON(String expectedBody) throws IOException {
-        MembershipDTO expected = mapper.readValue(expectedBody, MembershipDTO.class);
-        MembershipDTO actual = mapper.readValue(membershipResponse.getBody(), MembershipDTO.class);
-        Assert.assertNotNull("Expected a date", actual.getDateAdded());
-        Assert.assertEquals("Expected a different selfRef", expected.getLink("self").getHref(), actual.getLink("self").getHref());
-        Assert.assertEquals("Expected a different team ref", expected.getLink("team"), actual.getLink("team"));
-        Assert.assertEquals("Expected a different team ref", expected.getLink("user"), actual.getLink("user"));
-        Assert.assertEquals("Expected three links", expected.getLinks().size() , actual.getLinks().size());
+        Assert.assertEquals("Expected a different body", StringUtils.trimAllWhitespace(expectedBody),membershipResponse.getBody());
     }
 
 
@@ -85,7 +81,7 @@ public class MembershipSteps {
 
     @Then("^the memberships response should be JSON:$")
     public void the_memberships_response_should_be_JSON(String expectedBody) {
-        Assert.assertEquals("Expected a different response body", expectedBody, membershipsResponse.getBody());
+        Assert.assertEquals("Expected a different response body", StringUtils.trimAllWhitespace(expectedBody), membershipsResponse.getBody());
     }
 
 

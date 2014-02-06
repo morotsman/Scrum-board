@@ -1,6 +1,7 @@
 package org.github.morotsman.todo.model.unit_of_work;
 
 import org.github.morotsman.todo.config.HibernateConfig;
+import org.github.morotsman.todo.model.team.Team;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -25,10 +26,21 @@ public class WorkTest {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
 
+        Team team = getTeam("aTeam");
+        session.save(team);
+
         Story story = getStory();
-        Long messageId = (Long)session.save(story);
+        story.addTeam(team);
+        session.save(story);
         tx.commit();
         session.close();
+    }
+
+    private Team getTeam(String teamName){
+        Team result = new Team();
+        result.setDescription("A fine team");
+        result.setName(teamName);
+        return result;
     }
 
     private Story getStory() {
@@ -45,29 +57,11 @@ public class WorkTest {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
 
-        Task task = getTask(null);
-        Long messageId = (Long)session.save(task);
-        tx.commit();
-        session.close();
-    }
-
-    private Task getTask(Work parent) {
-        Task task = new Task();
-        task.setDescription("Create task");
-        task.setName("Create task");
-        task.setEstimate(5L);
-        if(parent != null){
-            task.setParent(parent);
-        }
-        return task;
-    }
-
-    @Test
-    public void addTaskToStory(){
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        Team team = getTeam("cTeam");
+        session.save(team);
 
         Story story = getStory();
+        story.setTeam(team);
         session.save(story);
 
         Task task = getTask(story);
@@ -77,34 +71,18 @@ public class WorkTest {
         session.close();
     }
 
-    @Test
-    public void countTasks(){
-        Session session1 = sessionFactory.openSession();
-        Transaction tx1 = session1.beginTransaction();
-
-        Story story = getStory();
-        Long id = (Long)session1.save(story);
-
-        Task task = getTask(story);
-        session1.save(task);
-
-        task = getTask(story);
-        session1.save(task);
-
-        tx1.commit();
-        session1.close();
-
-        Session session2 = sessionFactory.openSession();
-        Transaction tx2 = session2.beginTransaction();
-
-        Work storyWithTasks = (Work)session2.load(Story.class, id);
-
-        Long expected = 2L;
-        Assert.assertEquals("Expected a different number of tasks.", expected,storyWithTasks.numberOfTasks());
-
-        tx2.commit();
-        session2.close();
+    private Task getTask(Story parent) {
+        Task task = new Task();
+        task.setDescription("Create task");
+        task.setName("Create task");
+        task.setEstimate(5L);
+        if(parent != null){
+            task.setStory(parent);
+        }
+        return task;
     }
+
+
 
 
 

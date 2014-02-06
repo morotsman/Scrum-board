@@ -21,7 +21,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @Controller
 @RequestMapping("/v1")
-public class MembershipController {
+public class MembershipController extends ErrorHandler{
 
     private MembershipService membershipService;
 
@@ -69,27 +69,6 @@ public class MembershipController {
         }
         result.add(linkTo(methodOn(MembershipController.class).listMemberships(teamName)).withSelfRel());
         return result;
-    }
-
-    @ExceptionHandler(ResourceExistException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody
-    void handleResourceAlreadyExistsException(Exception exception) {
-        //exception.printStackTrace(System.out);
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    void handleServiceException(Exception exception) {
-        exception.printStackTrace(System.out);
-    }
-
-    @ExceptionHandler({ResourceNotFoundException.class,ObjectNotFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    void handleResourceNotFoundException(Exception exception) {
-        //exception.printStackTrace(System.out);
     }
 
     @Resource

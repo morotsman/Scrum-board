@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @Controller
 @RequestMapping("/v1")
-public class TeamController {
+public class TeamController extends ErrorHandler{
 
     private TeamService teamService;
 
@@ -72,26 +72,7 @@ public class TeamController {
         return toTeamDTO(team,true);
     }
 
-    @ExceptionHandler(ResourceExistException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody
-    void handleResourceAlreadyExistsException(Exception exception) {
-        exception.printStackTrace(System.out);
-    }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    void handleServiceException(Exception exception) {
-        exception.printStackTrace(System.out);
-    }
-
-    @ExceptionHandler({ResourceNotFoundException.class,ObjectNotFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    void handleResourceNotFoundException(Exception exception) {
-        exception.printStackTrace(System.out);
-    }
 
     @Resource
     public void setTeamService(TeamService teamService) {

@@ -2,8 +2,11 @@ package org.github.morotsman.todo.model.sprint;
 
 
 import org.github.morotsman.todo.model.team.Team;
+import org.github.morotsman.todo.model.unit_of_work.Story;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints=
@@ -22,6 +25,10 @@ public class Sprint {
 
     @Column(length = 255, nullable = false, name="NAME")
     private String name;
+
+    @OneToMany(mappedBy = "sprint")
+    @org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    private Set<Story> backlog = new HashSet<Story>();
 
     public Sprint() {
     }
@@ -48,5 +55,13 @@ public class Sprint {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Story> getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Set<Story> backlog) {
+        this.backlog = backlog;
     }
 }

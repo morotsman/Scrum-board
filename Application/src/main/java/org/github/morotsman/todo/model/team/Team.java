@@ -3,8 +3,7 @@ package org.github.morotsman.todo.model.team;
 
 import org.github.morotsman.todo.model.membership.Membership;
 import org.github.morotsman.todo.model.sprint.Sprint;
-import org.github.morotsman.todo.model.user.User;
-import org.hibernate.annotations.*;
+import org.github.morotsman.todo.model.unit_of_work.Story;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -28,6 +27,11 @@ public class Team {
     @OneToMany(mappedBy = "team")
     @org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private Set<Sprint> sprints = new TreeSet<Sprint>();
+
+
+    @OneToMany(mappedBy = "team")
+    @org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    private Set<Story> backlog = new HashSet<Story>();
 
     @Id
     @GeneratedValue
@@ -85,5 +89,13 @@ public class Team {
 
     public void setSprints(Set<Sprint> sprints) {
         this.sprints = sprints;
+    }
+
+    public Set<Story> getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Set<Story> backlog) {
+        this.backlog = backlog;
     }
 }

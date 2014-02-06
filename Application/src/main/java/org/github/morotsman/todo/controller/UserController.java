@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/v1")
-public class UserController {
+public class UserController extends ErrorHandler{
 
 
 
@@ -53,7 +53,7 @@ public class UserController {
         result.setUserName(user.getName());
         result.add(linkTo(methodOn(UserController.class).createUser(user.getName())).withSelfRel());
         result.add(linkTo(methodOn(TeamController.class).findTeams()).withRel("teams"));
-        if(includeMembership){
+        if(includeMembership){  //TODO should we have this link or maybe add another for example http://localhost:8080/todo/services/v1/user/Niklas/membership, investigate when starting to implement GUI.
             for(Membership membership: user.getMemberships()){
                 result.add(linkTo(methodOn(MembershipController.class).getMembership(membership.getTeam().getName(),membership.getUser().getName())).withRel("membership"));
             }
@@ -75,28 +75,7 @@ public class UserController {
         return toUserDTO(userService.getUser(userName),true);
     }
 
-    //TODO add logger
 
-    @ExceptionHandler(ResourceExistException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody
-    void handleResourceAlreadyExistsException(Exception exception) {
-        //exception.printStackTrace(System.out);
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    void handleServiceException(Exception exception) {
-        exception.printStackTrace(System.out);
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    void handleResourceNotFoundException(Exception exception) {
-        //exception.printStackTrace(System.out);
-    }
 
     @Resource
     public void setUserService(UserService userService) {

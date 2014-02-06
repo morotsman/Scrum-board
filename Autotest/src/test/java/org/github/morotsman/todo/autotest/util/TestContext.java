@@ -1,10 +1,7 @@
 package org.github.morotsman.todo.autotest.util;
 
 
-import org.github.morotsman.todo.web.dto.MembershipDTO;
-import org.github.morotsman.todo.web.dto.SprintDTO;
-import org.github.morotsman.todo.web.dto.TeamDTO;
-import org.github.morotsman.todo.web.dto.UserDTO;
+import org.github.morotsman.todo.web.dto.*;
 
 public class TestContext {
 
@@ -12,6 +9,7 @@ public class TestContext {
     private final HateoasAwareRestHelper<TeamDTO> teamHelperImpl = new HateoasAwareRestHelperImpl<TeamDTO>(new RestHelperImpl<TeamDTO>(),TeamDTO.class);
     private final HateoasAwareRestHelper<MembershipDTO> membershipHelperImpl = new HateoasAwareRestHelperImpl<MembershipDTO>(new RestHelperImpl<MembershipDTO>(),MembershipDTO.class);
     private final HateoasAwareRestHelper<SprintDTO> sprintHelperImpl = new HateoasAwareRestHelperImpl<SprintDTO>(new RestHelperImpl<SprintDTO>(),SprintDTO.class);
+    private final HateoasAwareRestHelper<StoryDTO> storyHelperImpl = new HateoasAwareRestHelperImpl<StoryDTO>(new RestHelperImpl<StoryDTO>(),StoryDTO.class);
 
     private static final TestContext instance = new TestContext();
 
@@ -37,9 +35,14 @@ public class TestContext {
         return sprintHelperImpl;
     }
 
+    public HateoasAwareRestHelper<StoryDTO> getStoryHelperImpl() {
+        return storyHelperImpl;
+    }
+
     public void cleanUp(){
         membershipHelperImpl.cleanUp();
         userHelperImpl.cleanUp();
+        storyHelperImpl.cleanUp();
         sprintHelperImpl.cleanUp();
         teamHelperImpl.cleanUp();
     }

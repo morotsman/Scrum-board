@@ -9,7 +9,6 @@ import org.github.morotsman.todo.model.sprint.Sprint;
 import org.github.morotsman.todo.model.team.Team;
 import org.github.morotsman.todo.model.unit_of_work.Story;
 import org.github.morotsman.todo.model.unit_of_work.Task;
-import org.github.morotsman.todo.model.unit_of_work.Work;
 import org.github.morotsman.todo.model.user.User;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +36,7 @@ public class HibernateConfig {
         properties.setProperty("hibernate.hbm2ddl.import_files","/import.sql");
 
         return new LocalSessionFactoryBuilder(datasource())
-                .addAnnotatedClasses(User.class, Team.class, Membership.class, Sprint.class, Task.class, Work.class, Story.class)
+                .addAnnotatedClasses(User.class, Team.class, Membership.class, Sprint.class, Task.class, Story.class)
                 .addProperties(properties)
                 .buildSessionFactory() ;
     }

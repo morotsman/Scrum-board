@@ -23,7 +23,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @Controller
 @RequestMapping("/v1")
-public class SprintController {
+public class SprintController extends ErrorHandler{
 
     private SprintService sprintService;
 
@@ -72,26 +72,5 @@ public class SprintController {
         this.sprintService = sprintService;
     }
 
-    //TODO add logger
 
-    @ExceptionHandler(ResourceExistException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody
-    void handleResourceAlreadyExistsException(Exception exception) {
-        //exception.printStackTrace(System.out);
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    void handleServiceException(Exception exception) {
-        exception.printStackTrace(System.out);
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    void handleResourceNotFoundException(Exception exception) {
-        //exception.printStackTrace(System.out);
-    }
 }

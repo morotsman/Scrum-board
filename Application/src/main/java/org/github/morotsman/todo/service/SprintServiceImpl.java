@@ -26,7 +26,17 @@ public class SprintServiceImpl implements SprintService{
     @Transactional
     @Override
     public List<Sprint> getSprints(String teamName) {
-        List<Sprint> result = findSprints(teamName);
+        return sortSprints(findSprints(teamName));
+    }
+
+    private List<Sprint> findSprints(String teamName){
+        Sprint example = new Sprint();
+        Team team = teamService.getTeam(teamName);
+        example.setTeam(team);
+        return  sprintRepository.findByExample(example);
+    }
+
+    private List<Sprint> sortSprints(List<Sprint> result) {
         Collections.sort(result, new Comparator<Sprint>() {
             @Override
             public int compare(Sprint sprint1, Sprint sprint2) {
@@ -35,13 +45,6 @@ public class SprintServiceImpl implements SprintService{
         }
         );
         return result;
-    }
-
-    private List<Sprint> findSprints(String teamName){
-        Sprint example = new Sprint();
-        Team team = teamService.getTeam(teamName);
-        example.setTeam(team);
-        return  sprintRepository.findByExample(example);
     }
 
     @Transactional

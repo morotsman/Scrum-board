@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -22,26 +24,40 @@ public class StoryServiceImpl implements StoryService{
 
     @Override
     public Story createStory(String teamName, Story story) {
-        try{
+        List<Story> stories =  getStories(teamName,story.getName());
+        if(stories.size() == 0){
             Team team = teamService.getTeam(teamName);
             story.addTeam(team);
             return storyRepository.makePersistent(story);
-        }catch(ConstraintViolationException e) {
-            throw new ResourceExistException("Could no create the user since it was not unique", e);
+        } else{
+            Story storyToUpdate = stories.get(0);
+            storyToUpdate.setDescription(story.getDescription());
+            storyToUpdate.setEstimate(story.getEstimate());
+            storyToUpdate.setBug(story.isBug());
+            return storyToUpdate;
         }
     }
 
     @Override
     public void deleteStory(String teamName, String storyName) {
-        storyRepository.makeTransient(findStory(teamName,storyName));
+        List<Story> stories =  getStories(teamName,storyName);
+        if(stories.size()== 0){
+            throw new ResourceNotFoundException("A story named " + storyName + " on the team" + teamName+" don't exists.");
+        }
+        storyRepository.makeTransient(stories.get(0));
     }
 
-    private Story findStory(String teamName, String storyName){
+    private List<Story> getStories(String teamName, String storyName){
         Story example = new Story();
         example.setName(storyName);
         Team team = teamService.getTeam(teamName);
         example.setTeam(team);
-        List<Story> stories =  storyRepository.findByExample(example);
+        return storyRepository.findByExample(example);
+    }
+
+    @Override
+    public Story getStory(String teamName, String storyName) {
+        List<Story> stories =  getStories(teamName,storyName);
         if(stories.size()== 0){
             throw new ResourceNotFoundException("A story named " + storyName + " on the team" + teamName+" don't exists.");
         }
@@ -49,13 +65,26 @@ public class StoryServiceImpl implements StoryService{
     }
 
     @Override
-    public Story getStory(String teamName, String storyName) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<Story> findStories(String teamName) {
+        return sortSprints(findSprints(teamName));
     }
 
-    @Override
-    public List<Story> getStories(String teamName, String storyName) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    private List<Story> findSprints(String teamName){
+        Story example = new Story();
+        Team team = teamService.getTeam(teamName);
+        example.setTeam(team);
+        return  storyRepository.findByExample(example);
+    }
+
+    private List<Story> sortSprints(List<Story> result) {
+        Collections.sort(result, new Comparator<Story>() {
+            @Override
+            public int compare(Story story1, Story story2) {
+                return story1.getName().compareTo(story2.getName());
+            }
+        }
+        );
+        return result;
     }
 
     @Resource

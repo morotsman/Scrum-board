@@ -13,6 +13,6 @@ public interface StoryService {
 
     public Story getStory(String teamName, String storyName);
 
-    public List<Story> getStories(String teamName, String storyName);
+    public List<Story> findStories(String teamName);
 
 }

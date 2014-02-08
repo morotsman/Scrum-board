@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -55,14 +57,25 @@ public class StoryController extends ErrorHandler{
 
     @RequestMapping(value="/team/{teamName}/story/{storyName}", method = RequestMethod.GET)
     @ResponseBody
-    public StoriesDTO getStory(@PathVariable String teamName, @PathVariable String storyName){
-        throw new RuntimeException("Not implemented");
+    public StoryDTO getStory(@PathVariable String teamName, @PathVariable String storyName){
+        return toStoryDTO(storyService.getStory(teamName,storyName),teamName);
     }
 
     @RequestMapping(value="/team/{teamName}/story", method = RequestMethod.GET)
     @ResponseBody
     public StoriesDTO listStories(@PathVariable String teamName){
-        throw new RuntimeException("Not implemented");
+        List<Story> stories = storyService.findStories(teamName);
+        return toStoriesDTO(teamName, stories);
+
+    }
+
+    private StoriesDTO toStoriesDTO(String teamName, List<Story> stories) {
+        StoriesDTO result = new StoriesDTO();
+        for(Story each: stories){
+            result.getStories().add(toStoryDTO(each,teamName));
+        }
+        result.add(linkTo(methodOn(StoryController.class).listStories(teamName)).withSelfRel());
+        return result;
     }
 
     @Resource

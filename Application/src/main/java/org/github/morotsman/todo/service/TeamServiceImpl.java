@@ -46,13 +46,11 @@ public class TeamServiceImpl implements TeamService {
     public Team createTeam(String teamName, Team team) {
         List<Team> teams = findByName(teamName);
         if(teams.size() == 0){
-            System.out.println("create: " + teamName);
             Team teamToCreate = new Team();
             teamToCreate.setName(teamName);
             teamToCreate.setDescription(team.getDescription());
             return teamRepository.makePersistent(teamToCreate);
         }else{
-            System.out.println("modify: " + teamName);
             Team result = teams.get(0);
             result.setDescription(team.getDescription());
             return result;

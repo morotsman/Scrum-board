@@ -1,9 +1,13 @@
 package org.github.morotsman.todo.controller;
 
+import org.github.morotsman.todo.controller.converter.StoriesToStoriesDTO;
+import org.github.morotsman.todo.controller.converter.StoryDTOToStory;
+import org.github.morotsman.todo.controller.converter.StoryToStoryDTO;
 import org.github.morotsman.todo.model.unit_of_work.Story;
 import org.github.morotsman.todo.service.StoryService;
 import org.github.morotsman.todo.web.dto.StoriesDTO;
 import org.github.morotsman.todo.web.dto.StoryDTO;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,29 +27,17 @@ public class StoryController extends ErrorHandler{
 
     private StoryService storyService;
 
+    private ConversionService converterService;
+
+
     @RequestMapping(value="/team/{teamName}/story/{storyName}", method = RequestMethod.PUT)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public StoryDTO createStory(@PathVariable String teamName, @PathVariable String storyName, @RequestBody @Valid StoryDTO storyDTO){
-        System.out.println("story: " + storyName);
-        return toStoryDTO(storyService.createStory(teamName,fromStoryDTO(storyName,storyDTO)),teamName);
-
-    }
-
-    private StoryDTO toStoryDTO(Story story,String teamName){
-        StoryDTO result = new StoryDTO();
-        result.setDescription(story.getDescription());
-        result.setEstimate(story.getEstimate());
-        result.setName(story.getName());
-        result.add(linkTo(methodOn(StoryController.class).getStory(teamName, story.getName())).withSelfRel());
-        return result;
-    }
-
-    private Story fromStoryDTO(String storyName, StoryDTO storyDTO){
-        Story result = new Story();
-        result.setName(storyName);
-        result.setEstimate(storyDTO.getEstimate());
-        result.setDescription(storyDTO.getDescription());
+        storyDTO.setName(storyName);
+        Story story = storyService.createStory(teamName, converterService.convert(storyDTO, Story.class));
+        StoryDTO result = converterService.convert(story, StoryDTO.class);
+        result.add(linkTo(methodOn(StoryController.class).getStory(teamName, storyName)).withSelfRel());
         return result;
     }
 
@@ -58,28 +50,32 @@ public class StoryController extends ErrorHandler{
     @RequestMapping(value="/team/{teamName}/story/{storyName}", method = RequestMethod.GET)
     @ResponseBody
     public StoryDTO getStory(@PathVariable String teamName, @PathVariable String storyName){
-        return toStoryDTO(storyService.getStory(teamName,storyName),teamName);
+        StoryDTO result = converterService.convert(storyService.getStory(teamName, storyName),StoryDTO.class);
+        result.add(linkTo(methodOn(StoryController.class).getStory(teamName, storyName)).withSelfRel());
+        return result;
     }
 
     @RequestMapping(value="/team/{teamName}/story", method = RequestMethod.GET)
     @ResponseBody
     public StoriesDTO listStories(@PathVariable String teamName){
-        List<Story> stories = storyService.findStories(teamName);
-        return toStoriesDTO(teamName, stories);
-
-    }
-
-    private StoriesDTO toStoriesDTO(String teamName, List<Story> stories) {
-        StoriesDTO result = new StoriesDTO();
-        for(Story each: stories){
-            result.getStories().add(toStoryDTO(each,teamName));
+        StoriesDTO storiesDTO = converterService.convert(storyService.findStories(teamName), StoriesDTO.class);
+        storiesDTO.add(linkTo(methodOn(StoryController.class).listStories(teamName)).withSelfRel());
+        for(StoryDTO each: storiesDTO.getStories()){
+            each.add(linkTo(methodOn(StoryController.class).getStory(teamName, each.getName())).withSelfRel());
         }
-        result.add(linkTo(methodOn(StoryController.class).listStories(teamName)).withSelfRel());
-        return result;
+        return storiesDTO;
+
     }
+
 
     @Resource
     public void setStoryService(StoryService storyService) {
         this.storyService = storyService;
+    }
+
+
+    @Resource(name = "conversionService")
+    public void setConverter(ConversionService converter) {
+        this.converterService = converter;
     }
 }

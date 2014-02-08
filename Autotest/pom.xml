@@ -88,6 +88,27 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <deamon>true</deamon>
+            </properties>
+        </profile>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <deamon>false</deamon>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -162,7 +183,7 @@
                         </goals>
                         <configuration>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>false</daemon>
+                            <daemon>${deamon}</daemon>
                             <contextHandlers>
                                 <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
                                     <contextPath>/todo</contextPath>

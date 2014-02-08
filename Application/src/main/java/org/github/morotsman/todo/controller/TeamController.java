@@ -32,6 +32,7 @@ public class TeamController extends ErrorHandler{
         result.add(linkTo(methodOn(TeamController.class).getTeam(team.getName())).withSelfRel());
         result.add(linkTo(methodOn(MembershipController.class).listMemberships(team.getName())).withRel("membership"));
         result.add(linkTo(methodOn(SprintController.class).listSprints(team.getName())).withRel("sprint"));
+        result.add(linkTo(methodOn(StoryController.class).listStories(team.getName())).withRel("story"));
         return result;
     }
 

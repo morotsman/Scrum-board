@@ -13,7 +13,8 @@ And the teams response should be JSON:
         "links":[
             {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
             {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
-            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"},
+            {"rel":"story","href":"http://localhost:8080/todo/services/v1/team/aTeam/story"}
         ],
         "description":"Description",
         "teamName":"aTeam"
@@ -22,7 +23,8 @@ And the teams response should be JSON:
         "links":[
             {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/bTeam"},
             {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/bTeam/membership"},
-            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/bTeam/sprint"}
+            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/bTeam/sprint"},
+            {"rel":"story","href":"http://localhost:8080/todo/services/v1/team/bTeam/story"}
         ],
         "description":"Description",
         "teamName":"bTeam"
@@ -31,7 +33,8 @@ And the teams response should be JSON:
         "links":[
             {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/cTeam"},
             {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/cTeam/membership"},
-            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/cTeam/sprint"}
+            {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/cTeam/sprint"},
+            {"rel":"story","href":"http://localhost:8080/todo/services/v1/team/cTeam/story"}
         ],
         "description":"Description",
         "teamName":"cTeam"
@@ -54,7 +57,8 @@ And the team response should be JSON:
     "links":[
         {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
         {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
-        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"},
+        {"rel":"story","href":"http://localhost:8080/todo/services/v1/team/aTeam/story"}
     ],
     "description":"Description",
     "teamName":"aTeam"
@@ -73,7 +77,8 @@ And the team response should be JSON:
     "links":[
         {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
         {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
-        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"},
+        {"rel":"story","href":"http://localhost:8080/todo/services/v1/team/aTeam/story"}
     ],
     "description":"Description",
     "teamName":"aTeam"}
@@ -111,7 +116,8 @@ And the team response should be JSON:
     "links":[
         {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam"},
         {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership"},
-        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"}
+        {"rel":"sprint","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"},
+        {"rel":"story","href":"http://localhost:8080/todo/services/v1/team/aTeam/story"}
     ],
     "description":"Updated_Description",
     "teamName":"aTeam"

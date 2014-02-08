@@ -59,6 +59,12 @@ public class StoryController extends ErrorHandler{
         throw new RuntimeException("Not implemented");
     }
 
+    @RequestMapping(value="/team/{teamName}/story", method = RequestMethod.GET)
+    @ResponseBody
+    public StoriesDTO listStories(@PathVariable String teamName){
+        throw new RuntimeException("Not implemented");
+    }
+
     @Resource
     public void setStoryService(StoryService storyService) {
         this.storyService = storyService;

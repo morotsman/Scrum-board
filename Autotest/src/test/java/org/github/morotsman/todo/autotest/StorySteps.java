@@ -33,9 +33,22 @@ public class StorySteps {
         requestBody =  mapper.readValue(body, StoryDTO.class);
     }
 
+    @Given("^that the team: (\\w+) has the story: (.*)$")
+    public void the_System_knows_about_the_story(String teamName, String storyName) {
+        StoryDTO storyDTO = new StoryDTO();
+        storyDTO.setDescription("SomeDescription");
+        storyDTO.setEstimate(8L);
+        storyHelperImpl.putResource(BASE_URL + "/team/" + teamName + "/story/" + storyName, storyDTO);
+    }
+
     @When("^the clients creates a story with PUT (.*)$")
     public void the_clients_creates_a_story_with_PUT(String url) {
         sprintResponse = storyHelperImpl.putResource(BASE_URL + url, requestBody);
+    }
+
+    @When("^the clients deletes a story with DELETE (.*)$")
+    public void the_clients_deletes_a_story_with_DELETE_team_aTeam_story_aStory(String url) {
+        sprintResponse = storyHelperImpl.deleteResource(BASE_URL + url);
     }
 
     @Then("^the status code for the story request should be (\\d+)$")

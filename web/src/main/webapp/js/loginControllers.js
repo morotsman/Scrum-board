@@ -1,4 +1,4 @@
-define(['angular','_'], function() {
+define(['angular'], function() {
     'use strict';
 
     var loginControllers =  angular.module('myApp.loginControllers', ['myApp.services']);
@@ -16,7 +16,6 @@ define(['angular','_'], function() {
                 var failure = function(data){
                     if(data.status == 404){
                         $scope.loginData.loginError = $scope.loginData.user + " is an unknown user.";
-                        $location.path( "/login" );
                     } else{
                         $scope.loginData.loginError = "Received error code " + data.status + " from the server."
                     }

@@ -30,13 +30,15 @@ public class StoryController extends ErrorHandler{
     private ConversionService converterService;
 
 
+
     @RequestMapping(value="/team/{teamName}/story/{storyName}", method = RequestMethod.PUT)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public StoryDTO createStory(@PathVariable String teamName, @PathVariable String storyName, @RequestBody @Valid StoryDTO storyDTO){
         storyDTO.setName(storyName);
-        Story story = storyService.createStory(teamName, converterService.convert(storyDTO, Story.class));
-        StoryDTO result = converterService.convert(story, StoryDTO.class);
+        Story storyToCreate = converterService.convert(storyDTO, Story.class);
+        Story createdStory = storyService.createStory(teamName, storyToCreate);
+        StoryDTO result = converterService.convert(createdStory, StoryDTO.class);
         result.add(linkTo(methodOn(StoryController.class).getStory(teamName, storyName)).withSelfRel());
         return result;
     }

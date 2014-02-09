@@ -1,0 +1,23 @@
+<div class="login">
+    <h1>Todo</h1>
+    <table style="margin-top: 40px">
+        <tr>
+            <td>
+                <input type="text" placeholder="User name" ng-model="loginData.user" required/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button ng:click="login()">Login</button>
+            </td>
+            <td>
+                <a href="" ng-click="createUser()">Create user</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>{{loginData.loginError}}</h3>
+            </td>
+        </tr>
+    </table>
+</div>

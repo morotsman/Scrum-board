@@ -26,9 +26,9 @@ define(['angular', 'app'], function(angular, app) {
             $rootScope.$on( "$routeChangeStart", function(event, next, current) {
                 if ( $rootScope.loggedUser === undefined || $rootScope.loggedUser === null ) {
                     // no logged user, we should be going to #login
-                    if ( next.templateUrl === "partials/login.html" ) {
-                        // already going to #login, no redirect needed
-                    } else {
+                    if ( next.templateUrl === "partials/Login.html"  || next.templateUrl === "partials/CreateUser.html" || next.templateUrl === "partials/UserCreated.html") {
+                        // no need to redirect, the url above is ok even if not loged in
+                    }else {
                         // not going to #login, we should redirect now
                         $location.path( "/login" );
                     }

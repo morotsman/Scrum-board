@@ -12,10 +12,10 @@ define(['angular'], function() {
     myModule.factory('userDao', ['$resource', '$http','$rootScope', function($resource, $http, $rootScope) {
 
             return {
-                  getUser: function(callback, errorCallback) {
+                  getUser: function(theUserName, callback, errorCallback) {
                     var that = this;
                     var theUser = $resource('services/v1/user/:userName', {},{get:{method: "GET",isArray: false,cache: false}});
-                    theUser.get({userName: $rootScope.loggedUser}).$promise.then(callback, errorCallback);
+                    theUser.get({userName: theUserName}).$promise.then(callback, errorCallback);
                   },
                   toUser: function(jsonData) {
                     return jsonData;

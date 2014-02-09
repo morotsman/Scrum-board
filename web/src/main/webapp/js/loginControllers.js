@@ -7,22 +7,22 @@ define(['angular','_'], function() {
     loginControllers.controller('LoginController', ['$scope','$rootScope','$location','userDao', function($scope,$rootScope,$location,userDao) {
             
             $scope.login = function(){
-                $rootScope.loggedUser = $scope.loginData.user;
 
                 var success = function(user){
+                   $rootScope.loggedUser = $scope.loginData.user;
                    $location.url('/TodoView');
                 };
 
                 var failure = function(data){
                     if(data.status == 404){
-                        $scope.loginData.loginError = $rootScope.loggedUser + " is an unknown user.";
+                        $scope.loginData.loginError = $scope.loginData.user + " is an unknown user.";
                         $location.path( "/login" );
                     } else{
                         $scope.loginData.loginError = "Received error code " + data.status + " from the server."
                     }
                 };
 
-                userDao.getUser(success, failure);
+                userDao.getUser($scope.loginData.user, success, failure);
             };
 
             $scope.createUser = function(){

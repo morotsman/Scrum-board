@@ -11,51 +11,7 @@
 </head>
 <body ngCloak>
 <div ng-controller="MainController">
-    <div class="menu" ng-controller="MenuController">
-        <table>
-            <tr>
-                <td>
-                    <H3 style="margin-left: 10px; color:#CF0000">Todo</H3>
-                </td>
-                <td style="margin-left: 70px">
-                    <div class="dropDownMenu">
-                        <li class="dropdown" >
-                            <a class="dropdown-toggle">Team overview</a>
-                            <ul class="dropdown-menu">
-                                <li ng:click="showTeamOverview($index)" ng-repeat="team in menuData.teams">
-                                    <a>{{team}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </div>
-                </td>
-                <td>
-                    <div class="dropDownMenu">
-                        <li class="dropdown" >
-                            <a class="dropdown-toggle">Boards</a>
-                            <ul class="dropdown-menu">
-                                <li ng:click="showBoard($index)" ng-repeat="team in menuData.teams">
-                                    <a>{{team}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </div>
-                </td>
-                <td>
-                    <div class="dropDownMenu">
-                        <li class="dropdown" >
-                            <a class="dropdown-toggle">Admin</a>
-                            <ul class="dropdown-menu">
-                                <li ng:click="adminTeam()"><a>Team</a></li>
-                                <li ng:click="adminUser()"><a>User</a></li>
-                            </ul>
-                        </li>
-                    </div>
-                </td>
-            </tr>
-        </table>
 
-    </div>
 
     <div ng-view ></div>
 </div>

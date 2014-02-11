@@ -8,6 +8,8 @@ define(['angular','_'], function() {
 
         $scope.menuData = {};
 
+        $scope.menuData.template = 'partials/Personal.html';
+
         $scope.menuData.teams = [
             "Team 1",
             "Team 2",
@@ -15,19 +17,19 @@ define(['angular','_'], function() {
           ];
 
         $scope.adminTeam = function(){
-            alert("Admin team");
+            $scope.menuData.template = 'partials/AdminTeam.html';
         };
 
         $scope.adminUser = function(){
-            alert("Admin user");
+            $scope.menuData.template = 'partials/AdminUser.html';
         };
 
         $scope.showTeamOverview = function(teamIndex){
-            alert($scope.menuData.teams[teamIndex])
+            $scope.menuData.template = 'partials/TeamOverview.html';
         }
 
         $scope.showBoard = function(teamIndex){
-            alert($scope.menuData.teams[teamIndex])
+            $scope.menuData.template = 'partials/Board.html';
         }
 
     }]);

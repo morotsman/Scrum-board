@@ -9,7 +9,7 @@ define(['angular'], function() {
 
         var loginSuccess = function(user){
             $rootScope.loggedUser = $scope.loginData.user;
-            $location.url('/PersonalView');
+            $location.url('/MainView');
         };
 
         var loginFailure = function(data){

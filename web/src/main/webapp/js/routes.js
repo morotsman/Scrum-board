@@ -2,9 +2,9 @@ define(['angular', 'app'], function(angular, app) {
 	'use strict';
 
 	return app.config(['$routeProvider', function($routeProvider) {
-		$routeProvider.when('/TodoView', {
-			templateUrl: 'partials/Editor.html',
-			controller: 'TodoController'
+		$routeProvider.when('/PersonalView', {
+			templateUrl: 'partials/Personal.html',
+			controller: 'PersonalController'
 		});
         $routeProvider.when('/login', {
 			templateUrl: 'partials/Login.html',

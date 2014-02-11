@@ -5,68 +5,66 @@ define(['angular'], function() {
             // Sample controller where service is being used
 
     loginControllers.controller('LoginController', ['$scope','$rootScope','$location','userDao', function($scope,$rootScope,$location,userDao) {
-            
-            $scope.login = function(){
 
-                var success = function(user){
-                   $rootScope.loggedUser = $scope.loginData.user;
-                   $location.url('/TodoView');
-                };
 
-                var failure = function(data){
-                    if(data.status == 404){
-                        $scope.loginData.loginError = $scope.loginData.user + " is an unknown user.";
-                    } else{
-                        $scope.loginData.loginError = "Received error code " + data.status + " from the server."
-                    }
-                };
+        var loginSuccess = function(user){
+            $rootScope.loggedUser = $scope.loginData.user;
+            $location.url('/PersonalView');
+        };
 
-                userDao.getUser($scope.loginData.user, success, failure);
-            };
-
-            $scope.createUser = function(){
-                 $location.path( "/createUser" );
+        var loginFailure = function(data){
+            if(data.status == 404){
+                $scope.loginData.loginError = $scope.loginData.user + " is an unknown user.";
+            } else{
+                $scope.loginData.loginError = "Received error code " + data.status + " from the server."
             }
-        }]);
+        };
 
-        loginControllers.controller('CreateUserController', ['$scope','userDao','$location', function($scope, userDao,$location) {
+        $scope.login = function(){
+            userDao.getUser($scope.loginData.user, loginSuccess, loginFailure);
+        };
 
-             $scope.createUser = function(){
+        $scope.createUser = function(){
+            $location.path( "/createUser" );
+        }
 
-                 var success = function(user){
-                    $location.url('/userCreated');
-                 }
+    }]);
 
-                 var failure = function(error){
-                    if(error.status == 409){
-                       $scope.createUserData.error = $scope.createUserData.user + " already exists.";
-                    }else{
-                       $scope.createUserData.error = "Received error code " + data.status + " from the server."
-                    }
-                 }
+    loginControllers.controller('CreateUserController', ['$scope','userDao','$location', function($scope, userDao,$location) {
 
-                 userDao.createUser($scope.createUserData.user, success, failure);
-             };
+        var success = function(user){
+            $location.url('/userCreated');
+        }
 
-             $scope.goToLogin = function(){
-                $location.url( "/login" );
-             }
+        var failure = function(error){
+            if(error.status == 409){
+                $scope.createUserData.error = $scope.createUserData.user + " already exists.";
+            }else{
+                $scope.createUserData.error = "Received error code " + data.status + " from the server."
+            }
+        }
 
-        }]);
+        $scope.createUser = function(){
+            userDao.createUser($scope.createUserData.user, success, failure);
+        };
 
-        loginControllers.controller('UserCreatedController', ['$scope','$location', function($scope, $location) {
+        $scope.goToLogin = function(){
+            $location.url( "/login" );
+        }
+    }]);
 
-             $scope.goToLogin = function(){
-                $location.url( "/login" );
-             }
+    loginControllers.controller('UserCreatedController', ['$scope','$location', function($scope, $location) {
 
-
-        }]);
-
-        return loginControllers;
-
+        $scope.goToLogin = function(){
+            $location.url( "/login" );
+        }
 
 
+    }]);
 
+
+
+
+    return loginControllers;
 
 });

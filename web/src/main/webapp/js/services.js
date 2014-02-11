@@ -14,14 +14,11 @@ define(['angular'], function() {
             return {
                   getUser: function(theUserName, callback, errorCallback) {
                     var that = this;
-                    var theUser = $resource('services/v1/user/:userName', {},{get:{method: "GET",isArray: false,cache: false}});
-                    theUser.get({userName: theUserName}).$promise.then(callback, errorCallback);
-                  },
-                  toUser: function(jsonData) {
-                    return jsonData;
+                    var User = $resource('services/v1/user/:userName', {},{get:{method: "GET"}});
+                    User.get({userName: theUserName}).$promise.then(callback, errorCallback);
                   },
                   createUser : function(newUserName, callback, errorCallback){
-                        var User = $resource('services/v1/user/'+newUserName,{}, {save:{method: "PUT", isArray: false, cache: false}});
+                        var User = $resource('services/v1/user/'+newUserName,{}, {save:{method: "PUT"}});
                         User.save({userName: newUserName}).$promise.then(callback, errorCallback);
                   }
 

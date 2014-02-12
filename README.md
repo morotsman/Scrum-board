@@ -2,6 +2,8 @@ In this project I'm implementing a small scrum planning application.
 
 The goal of the project is to learn some Angular js.
 
+Expect major refacory's.
+
 build: mvn clean install
 
 start the application: mvn clean install -Plocal

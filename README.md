@@ -1,4 +1,4 @@
-In this project I'm implementing a scrum planning application.
+In this project I'm implementing a small scrum planning application.
 
 The goal of the project is to learn some Angular js.
 

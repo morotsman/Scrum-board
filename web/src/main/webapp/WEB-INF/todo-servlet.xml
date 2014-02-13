@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -11,7 +12,9 @@
         http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 		http://www.springframework.org/schema/util
-		http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <!-- Configuration -->
     <bean id="propertyConfigurer"
@@ -37,7 +40,7 @@
     </bean>
 
     <mvc:annotation-driven />
-
+    <context:component-scan base-package="org.github.morotsman.todo.web" />
 
     <import resource="classpath:todo-context.xml" />
 
@@ -46,6 +49,18 @@
             <property name="sessionFactory" ref="sessionFactory"/>
         </bean>
     </mvc:interceptors>
+
+    <security:http auto-config='true'>
+        <security:intercept-url pattern="/*" access="ROLE_USER" />
+        <security:http-basic />
+    </security:http>
+
+
+
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="securityUserService" />
+    </security:authentication-manager>
+
 
 
 </beans>

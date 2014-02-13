@@ -2,38 +2,34 @@ define(['angular', 'app'], function(angular, app) {
 	'use strict';
 
 	return app.config(['$routeProvider', function($routeProvider) {
-		$routeProvider.when('/MainView', {
-			templateUrl: 'partials/Main.html',
-			controller: 'MainController'
+		$routeProvider.when('/PersonalView', {
+			templateUrl: 'partials/Personal.html',
+			controller: 'PersonalController'
 		});
-        $routeProvider.when('/login', {
-			templateUrl: 'partials/Login.html',
-			controller: 'LoginController'
-		});
-		$routeProvider.when('/createUser', {
-            templateUrl: 'partials/CreateUser.html',
-        	controller: 'CreateUserController'
+
+		$routeProvider.when('/AdminTeamView', {
+            templateUrl: 'partials/AdminTeam.html',
+            controller: 'AdminTeamController'
         });
-        $routeProvider.when('/userCreated', {
-            templateUrl: 'partials/UserCreated.html',
-            controller: 'UserCreatedController'
-         });
 
+		$routeProvider.when('/AdminUserView', {
+            templateUrl: 'partials/AdminUser.html',
+            controller: 'AdminUserController'
+        });
 
+		$routeProvider.when('/TeamOverviewView', {
+            templateUrl: 'partials/TeamOverview.html',
+            controller: 'TeamOverviewController'
+        });
 
-		$routeProvider.otherwise({redirectTo: '/login'});
+		$routeProvider.when('/BoardView', {
+            templateUrl: 'partials/Board.html',
+            controller: 'BoardController'
+        });
+
+		$routeProvider.otherwise({redirectTo: '/PersonalView'});
 	}]).run(function($rootScope, $location) {
-            $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-                if ( $rootScope.loggedUser === undefined || $rootScope.loggedUser === null ) {
-                    // no logged user, we should be going to #login
-                    if ( next.templateUrl === "partials/Login.html"  || next.templateUrl === "partials/CreateUser.html" || next.templateUrl === "partials/UserCreated.html") {
-                        // no need to redirect, the url above is ok even if not loged in
-                    }else {
-                        // not going to #login, we should redirect now
-                        $location.path( "/login" );
-                    }
-                }  
-            });
+
         });
 
 });

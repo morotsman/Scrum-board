@@ -4,7 +4,6 @@ define([
         'ui_keypress',
 	'services',
 	'directives',
-	'loginControllers',
 	'todoControllers',
 	'angularRoute',
         'ngResource',
@@ -14,7 +13,6 @@ define([
 
 		return angular.module('myApp', [
 			'ngRoute',
-			'myApp.loginControllers',
 			'myApp.todoControllers',
 			'myApp.services',
 			'myApp.directives',

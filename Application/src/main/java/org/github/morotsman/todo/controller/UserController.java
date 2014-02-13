@@ -11,6 +11,8 @@ import org.github.morotsman.todo.service.exceptions.ResourceNotFoundException;
 import org.github.morotsman.todo.web.dto.UserDTO;
 import org.github.morotsman.todo.web.dto.UsersDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,16 @@ public class UserController extends ErrorHandler{
 
     private UserService userService;
 
+
+    @RequestMapping(value="/me", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    UserDTO getLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        System.out.println("The logged in user is: " + name);
+        return toUserDTO(userService.getUser(name),true);
+    }
 
     @RequestMapping(value="/user", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

@@ -4,11 +4,10 @@ define(['angular','_'], function() {
     var todoControllers =  angular.module('myApp.todoControllers', ['myApp.services']);
             // Sample controller where service is being used
 
-    todoControllers.controller('MenuController', ['$scope', function($scope) {
+    todoControllers.controller('MenuController', ['$scope','$location', function($scope,$location) {
 
         $scope.menuData = {};
 
-        $scope.menuData.template = 'partials/Personal.html';
 
         $scope.menuData.teams = [
             "Team 1",
@@ -17,19 +16,19 @@ define(['angular','_'], function() {
           ];
 
         $scope.adminTeam = function(){
-            $scope.menuData.template = 'partials/AdminTeam.html';
+            $location.url('/AdminTeamView');
         };
 
         $scope.adminUser = function(){
-            $scope.menuData.template = 'partials/AdminUser.html';
+            $location.url('/AdminUserView');
         };
 
         $scope.showTeamOverview = function(teamIndex){
-            $scope.menuData.template = 'partials/TeamOverview.html';
+            $location.url('/TeamOverviewView');
         }
 
         $scope.showBoard = function(teamIndex){
-            $scope.menuData.template = 'partials/Board.html';
+            $location.url('/BoardView');
         }
 
     }]);
@@ -44,8 +43,25 @@ define(['angular','_'], function() {
 
     }]);
 
+    todoControllers.controller('AdminTeamController', ['$scope', function($scope) {
 
 
+    }]);
+
+    todoControllers.controller('AdminUserController', ['$scope', function($scope) {
+
+
+    }]);
+
+    todoControllers.controller('TeamOverviewController', ['$scope', function($scope) {
+
+
+    }]);
+
+    todoControllers.controller('BoardController', ['$scope', function($scope) {
+
+
+    }]);
 
     return todoControllers;
 

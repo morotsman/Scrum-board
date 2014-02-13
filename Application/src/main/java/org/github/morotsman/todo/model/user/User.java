@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(uniqueConstraints = {
+@Table(name = "USER", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"USER_NAME"})
 })
 public class User {
@@ -22,6 +22,12 @@ public class User {
 
     @Column(name="USER_NAME")
     private String name;
+
+    @Column(name="ROLE")
+    private String role;
+
+    @Column(name = "PASSWORD")
+    private String password;
 
 
     @OneToMany(mappedBy = "user")
@@ -56,7 +62,19 @@ public class User {
         this.memberships = memberships;
     }
 
+    public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

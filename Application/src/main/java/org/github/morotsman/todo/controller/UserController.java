@@ -57,7 +57,9 @@ public class UserController extends ErrorHandler{
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     UserDTO createUser(@PathVariable String userName) {
-        return toUserDTO(userService.createUser(userName),true);
+        User user = new User();
+        user.setName(userName);
+        return toUserDTO(userService.createUser(user),true);
     }
 
     private UserDTO toUserDTO(User user, boolean includeMembership){

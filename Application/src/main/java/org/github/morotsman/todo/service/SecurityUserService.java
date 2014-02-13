@@ -16,8 +16,6 @@ import java.util.Collections;
 
 public class SecurityUserService implements UserDetailsService{
 
-
-
     @Resource
     private UserService userService;
 
@@ -26,17 +24,11 @@ public class SecurityUserService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        /*
-        org.github.morotsman.todo.model.user.User user = userService.getUser(username);
+
+        org.github.morotsman.todo.model.user.User user = userService.getUser(userName);
         if(user == null) {
             throw new UsernameNotFoundException("user not found");
         }
-        */
-        if(!userName.equals("user")){
-            throw new UsernameNotFoundException("user not found");
-        }
-        org.github.morotsman.todo.model.user.User user = new org.github.morotsman.todo.model.user.User();
-        user.setName("user");
         return createUser(user);
     }
 

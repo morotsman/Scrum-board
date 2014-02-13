@@ -23,6 +23,7 @@ public class WorkTest {
 
     @Test
     public void createStory(){
+
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
 
@@ -34,6 +35,7 @@ public class WorkTest {
         session.save(story);
         tx.commit();
         session.close();
+
     }
 
     private Team getTeam(String teamName){
@@ -54,6 +56,7 @@ public class WorkTest {
 
     @Test
     public void createTask(){
+
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
 
@@ -69,6 +72,7 @@ public class WorkTest {
 
         tx.commit();
         session.close();
+
     }
 
     private Task getTask(Story parent) {

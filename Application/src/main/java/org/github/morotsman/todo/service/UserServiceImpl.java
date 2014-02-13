@@ -21,19 +21,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User createUser(String userName) {
+    public User createUser(User user) {
         try{
-            return userRepository.makePersistent(getUserInstance(userName));
+            return userRepository.makePersistent(user);
         }catch(ConstraintViolationException e) {
             throw new ResourceExistException("Could no create the user since it was not unique", e);
         }
     }
 
-    private User getUserInstance(String userName){
-        User user = new User();
-        user.setName(userName);
-        return user;
-    }
+
 
     @Override
     @Transactional
@@ -57,6 +53,12 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("Could not find user: " + userName);
         }
         return users.get(0);
+    }
+
+    private User getUserInstance(String userName){
+        User user = new User();
+        user.setName(userName);
+        return user;
     }
 
     @Override

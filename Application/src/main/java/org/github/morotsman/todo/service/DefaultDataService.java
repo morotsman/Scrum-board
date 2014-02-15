@@ -16,7 +16,7 @@ public class DefaultDataService {
         User user = new User();
         user.setName("user");
         user.setPassword("password");
-        user.setRole("ROLE_USER");
+        user.setRole("ROLE_ADMIN");
         userService.createUser(user);
     }
 

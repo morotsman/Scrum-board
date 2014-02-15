@@ -59,6 +59,7 @@ public class UserController extends ErrorHandler{
     UserDTO createUser(@PathVariable String userName) {
         User user = new User();
         user.setName(userName);
+        user.setRole("ROLE_USER");
         return toUserDTO(userService.createUser(user),true);
     }
 

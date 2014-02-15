@@ -34,7 +34,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<User> findUsers() {
-        List<User> result = userRepository.findAll();
+        User user = new User();
+        user.setRole("ROLE_USER");
+        List<User> result = userRepository.findByExample(user);
+        for(User each: result){
+            System.out.println("************************** " + each.getName() + " " + each.getRole());
+        }
         Collections.sort(result, new Comparator<User>() {
             @Override
             public int compare(User user, User user1) {
@@ -44,6 +49,8 @@ public class UserServiceImpl implements UserService {
         );
         return result;
     }
+
+
 
     @Override
     @Transactional

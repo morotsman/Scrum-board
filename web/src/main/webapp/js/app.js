@@ -5,6 +5,7 @@ define([
 	'services',
 	'directives',
 	'todoControllers',
+	'menuControllers',
 	'angularRoute',
         'ngResource',
         'ui_bootstrap'
@@ -14,6 +15,7 @@ define([
 		return angular.module('myApp', [
 			'ngRoute',
 			'myApp.todoControllers',
+			'myApp.menuControllers',
 			'myApp.services',
 			'myApp.directives',
                         'ui.sortable',

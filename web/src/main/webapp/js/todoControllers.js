@@ -4,46 +4,63 @@ define(['angular','_'], function() {
     var todoControllers =  angular.module('myApp.todoControllers', ['myApp.services']);
             // Sample controller where service is being used
 
-    todoControllers.controller('MenuController', ['$scope','$location', function($scope,$location) {
-
-        $scope.menuData = {};
-
-
-        $scope.menuData.teams = [
-            "Team 1",
-            "Team 2",
-            "Team 3"
-          ];
-
-        $scope.adminTeam = function(){
-            $location.url('/AdminTeamView');
-        };
-
-        $scope.adminUser = function(){
-            $location.url('/AdminUserView');
-        };
-
-        $scope.showTeamOverview = function(teamIndex){
-            $location.url('/TeamOverviewView');
-        }
-
-        $scope.showBoard = function(teamIndex){
-            $location.url('/BoardView');
-        }
-
-    }]);
-
-    todoControllers.controller('MainController', ['$scope', function($scope) {
-
-
-    }]);
 
     todoControllers.controller('PersonalController', ['$scope', function($scope) {
 
 
     }]);
 
-    todoControllers.controller('AdminTeamController', ['$scope', function($scope) {
+    todoControllers.controller('AdminTeamController', ['$scope','teamDao', function($scope, teamDao) {
+
+        $scope.teamAdminData = {};
+
+
+
+        var teamsLoaded = function(data){
+            $scope.teamAdminData.teams = data.teams;
+        }
+
+        var loadTeams = function(){
+            teamDao.getTeams(teamsLoaded, failure);
+        }
+
+        var deselectAllTeams = function(){
+            $scope.teamAdminData.selectedTeam = undefined;
+            $scope.teamAdminData.teams = _.map($scope.teamAdminData.teams,function(team){ team.selected = false; return team;});
+        };
+
+        $scope.selectTeam = function(index){
+           deselectAllTeams();
+           $scope.teamAdminData.selectedTeam =  $scope.teamAdminData.teams[index];
+           $scope.teamAdminData.selectedTeam.selected = true;
+           $scope.teamAdminData.createTeam = undefined;
+        };
+
+        $scope.newTeam = function(){
+            deselectAllTeams();
+            $scope.teamAdminData.selectedTeam = undefined;
+            $scope.teamAdminData.createTeam = {};
+        }
+
+        var success = function(){
+            loadTeams();
+        };
+
+        var failure = function(failure){
+            alert("Failure");
+        };
+
+        $scope.createTeam = function(){
+            teamDao.saveTeam($scope.teamAdminData.createTeam, success, failure);
+            $scope.teamAdminData.createTeam = undefined;
+        }
+
+        $scope.saveTeam = function(){
+            teamDao.saveTeam($scope.teamAdminData.selectedTeam, success, failure);
+            deselectAllTeams();
+        }
+
+        loadTeams();
 
 
     }]);

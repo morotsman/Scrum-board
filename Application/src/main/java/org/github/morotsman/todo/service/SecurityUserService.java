@@ -41,11 +41,11 @@ public class SecurityUserService implements UserDetailsService{
     }
 
     private org.springframework.security.core.userdetails.User createUser(org.github.morotsman.todo.model.user.User user) {
-        return new org.springframework.security.core.userdetails.User(user.getName(), "password", Collections.singleton(createAuthority(user)));
+        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), Collections.singleton(createAuthority(user)));
     }
 
     private GrantedAuthority createAuthority(org.github.morotsman.todo.model.user.User user) {
-        return new SimpleGrantedAuthority("ROLE_USER");
+        return new SimpleGrantedAuthority(user.getRole());
     }
 
 }

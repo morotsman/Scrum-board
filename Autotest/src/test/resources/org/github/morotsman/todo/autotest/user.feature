@@ -10,13 +10,13 @@ And the response should be JSON:
 {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],
 "users":[
     {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Beata"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
-    "userName":"Beata"},
+    "userName":"Beata","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"},
     {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Hektor"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
-    "userName":"Hektor"},
+    "userName":"Hektor","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"},
     {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Lena"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
-    "userName":"Lena"},
+    "userName":"Lena","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"},
     {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
-    "userName":"Niklas"}]}
+    "userName":"Niklas","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"}]}
 """
 
 @TestContext
@@ -30,18 +30,45 @@ And the response should be JSON:
 
 @TestContext
 Scenario: Create a user
+Given the request body for the user request is:
+"""
+{"password":"aPassword", "firstName":"aName", "lastName":"aLastName", "phoneNumber":"aPhoneNumber", "email":"email@something.com"}
+"""
 When the client requests PUT /user/Niklas
 Then the status code for the user request should be 201
 And the response should be JSON:
   """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas"}
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"}
   """
 
 @TestContext
 Scenario: Try to create an already existing user
 Given the System knows about the user: Niklas
+And the request body for the user request is:
+"""
+{"firstName":"aName2", "lastName":"aLastName2", "phoneNumber":"aPhoneNumber2", "email":"email@something.com2", "userName": "invalid"}
+"""
 When the client requests PUT /user/Niklas
-Then the status code for the user request should be 409
+Then the status code for the user request should be 201
+And the response should be JSON:
+  """
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas","password":null,"firstName":"aName2","lastName":"aLastName2","email":"email@something.com2","phoneNumber":"aPhoneNumber2"}
+  """
+
+
+@TestContext
+Scenario: Change password
+Given the System knows about the user: Niklas
+And the request body for the user request is:
+"""
+{"password":"aPassword2", "firstName":"aName2", "lastName":"aLastName2", "phoneNumber":"aPhoneNumber2", "email":"email@something.com2"}
+"""
+When the client requests PUT /user/Niklas
+Then the status code for the user request should be 201
+And the response should be JSON:
+  """
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas","password":null,"firstName":"aName2","lastName":"aLastName2","email":"email@something.com2","phoneNumber":"aPhoneNumber2"}
+  """
 
 
 @TestContext
@@ -62,7 +89,7 @@ When the client requests GET /user/Niklas
 Then the status code for the user request should be 200
 And the response should be JSON:
   """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas"}
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"}
   """
 
 @TestContext
@@ -83,7 +110,7 @@ And the response should be JSON:
 [{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},
 {"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"},
 {"rel":"membership","href":"http://localhost:8080/todo/services/v1/team/aTeam/membership/Niklas"}],
-"userName":"Niklas"}
+"userName":"Niklas","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"}
   """
 
 
@@ -100,7 +127,7 @@ And the response should be JSON:
 [{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],
 "users":[
     {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},
-    {"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas"}]}
+    {"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"}]}
   """
 
 

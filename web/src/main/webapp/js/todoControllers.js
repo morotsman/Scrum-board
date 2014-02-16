@@ -31,8 +31,8 @@ define(['angular','_'], function() {
 
         $scope.selectTeam = function(index){
            deselectAllTeams();
-           $scope.teamAdminData.selectedTeam =  $scope.teamAdminData.teams[index];
-           $scope.teamAdminData.selectedTeam.selected = true;
+           $scope.teamAdminData.selectedTeam =  _.pick($scope.teamAdminData.teams[index], 'teamName', 'description');
+           $scope.teamAdminData.teams[index].selected = true;
            $scope.teamAdminData.createTeam = undefined;
         };
 
@@ -60,13 +60,71 @@ define(['angular','_'], function() {
             deselectAllTeams();
         }
 
+        $scope.deleteTeam = function(){
+            teamDao.deleteTeam($scope.teamAdminData.selectedTeam, success, failure);
+            deselectAllTeams();
+        }
+
         loadTeams();
 
 
     }]);
 
-    todoControllers.controller('AdminUserController', ['$scope', function($scope) {
+    todoControllers.controller('AdminUserController', ['$scope','userDao', function($scope, userDao) {
+        $scope.userAdminData = {};
 
+
+
+        var usersLoaded = function(data){
+            $scope.userAdminData.users = data.users;
+        }
+
+        var loadUsers = function(){
+            userDao.getUsers(usersLoaded, failure);
+        }
+
+        var deselectAllUsers = function(){
+            $scope.userAdminData.selectedUser = undefined;
+            $scope.userAdminData.users = _.map($scope.userAdminData.users,function(user){ user.selected = false; return user;});
+        };
+
+        $scope.selectUser = function(index){
+           deselectAllUsers();
+           $scope.userAdminData.selectedUser =  $scope.userAdminData.users[index];
+           $scope.userAdminData.users[index].selected = true;
+           $scope.userAdminData.createUser = undefined;
+        };
+
+        $scope.newUser = function(){
+            deselectAllUsers();
+            $scope.userAdminData.selectedUser = undefined;
+            $scope.userAdminData.createUser = {};
+        }
+
+        var success = function(){
+            loadUsers();
+        };
+
+        var failure = function(failure){
+            alert("Failure");
+        };
+
+        $scope.createUser = function(){
+            userDao.saveUser($scope.userAdminData.createUser, success, failure);
+            $scope.userAdminData.createUser = undefined;
+        }
+
+        $scope.saveUser = function(){
+            userDao.saveUser($scope.userAdminData.selectedUser, success, failure);
+            deselectAllUsers();
+        }
+
+        $scope.deleteUser = function(){
+            userDao.deleteUser($scope.userAdminData.selectedUser, success, failure);
+            deselectAllUsers();
+        }
+
+        loadUsers();
 
     }]);
 

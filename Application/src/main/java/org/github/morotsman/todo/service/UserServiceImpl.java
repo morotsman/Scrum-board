@@ -22,10 +22,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User createUser(User user) {
-        try{
+        List<User> users = userRepository.findByExample(getUserInstance(user.getName()));
+        if(users == null || users.size() == 0){
             return userRepository.makePersistent(user);
-        }catch(ConstraintViolationException e) {
-            throw new ResourceExistException("Could no create the user since it was not unique", e);
+        } else{
+            User result = users.get(0);
+            if(user.getPassword()!= null){
+                result.setPassword(user.getPassword());
+            }
+            result.setEmail(user.getEmail());
+            result.setFirstName(user.getFirstName());
+            result.setLastName(user.getLastName());
+            result.setPhoneNumber(user.getPhoneNumber());
+            return result;
         }
     }
 

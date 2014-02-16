@@ -1,1 +1,109 @@
-Admin user
+<div ng-controller="AdminUserController">
+    <div class="admin_list_container">
+        <h3>Users</h3>
+
+        <ul class="admin_list">
+            <li ng:click="selectUser($index)" ng-repeat="user in userAdminData.users" class="selected_{{user.selected}}">
+                {{user.userName}}
+            </li>
+        </ul>
+        <div class="admin_button_container">
+            <table>
+                <tr>
+                    <td><button ng:click="newUser()">New</button></td>
+                    <td><button ng:click="deleteUser()" ng-show="userAdminData.selectedUser">Delete</button></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div ng-show="userAdminData.selectedUser" class="admin_editor">
+        <h1>Update user</h1>
+        <table>
+
+            <tr>
+                <td>First name</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.selectedUser.firstName" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.selectedUser.lastName" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Phone number</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.selectedUser.phoneNumber" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.selectedUser.email" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button ng:click="saveUser()">Save</button>
+                    <button ng:click="changePassword()">Change password</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div ng-show="userAdminData.createUser" class="admin_editor">
+        <h1>Create user</h1>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.createUser.userName" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>First name</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.createUser.firstName" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.createUser.lastName" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Phone number</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.createUser.phoneNumber" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.createUser.email" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <input type="text" ng-model="userAdminData.createUser.password" required ng-trim="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button ng:click="createUser()">Create</button>
+                </td>
+            </tr>
+        </table>
+
+
+
+    </div>
+
+
+</div>

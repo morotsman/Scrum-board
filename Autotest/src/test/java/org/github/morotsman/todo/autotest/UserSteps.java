@@ -4,6 +4,8 @@ package org.github.morotsman.todo.autotest;
 import cucumber.annotation.en.Given;
 import cucumber.annotation.en.Then;
 import cucumber.annotation.en.When;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.github.morotsman.todo.autotest.util.RestHelper;
 import org.github.morotsman.todo.autotest.util.TestContext;
 import org.github.morotsman.todo.web.dto.UserDTO;
@@ -23,13 +25,24 @@ public class UserSteps {
 
     private ResponseEntity<String> response;
 
+    private ObjectMapper mapper = new ObjectMapper();
+
+    private UserDTO requestBody;
+
 
     @Given("^the System knows about the user: (.*)$")
     public void that_user_exists(String user)  {
         if(!StringUtils.hasLength(user)){
             return;
         }
-        Assert.assertEquals("Could not create user " + user,201, userHelperImpl.putResource(BASE_URL + user, null).getStatusCode().value());
+        UserDTO userDTO = new UserDTO();
+        userDTO.setPassword("aPassword");
+        userDTO.setFirstName("aName");
+        userDTO.setLastName("aLastName");
+        userDTO.setPhoneNumber("aPhoneNumber");
+        userDTO.setEmail("email@something.com");
+
+        Assert.assertEquals("Could not create user " + user,201, userHelperImpl.putResource(BASE_URL + user, userDTO).getStatusCode().value());
     }
 
 
@@ -43,10 +56,17 @@ public class UserSteps {
         }
     }
 
+    @Given("^the request body for the user request is:$")
+    public void the_request_body_for_the_user_request_is(String body) throws IOException {
+        requestBody =  mapper.readValue(body, UserDTO.class);
+    }
+
+    /*
     @Given("^that the user: Niklas has the membership in the teams: aTeam,bTeam$")
     public void that_the_user_Niklas_has_the_membership_in_the_teams_aTeam_bTeam() {
         // Express the Regexp above with the code you wish you had
     }
+    */
 
     @When("^the client requests GET /user$")
     public void executing_GET_user() {
@@ -55,7 +75,7 @@ public class UserSteps {
 
     @When("^the client requests PUT /user/(.*)$")
     public void executing_PUT_user(String userName) throws IOException {
-        response = userHelperImpl.putResource(BASE_URL + userName);
+        response = userHelperImpl.putResource(BASE_URL + userName,requestBody);
     }
 
     @When("^the client requests DELETE /user/(.*)")

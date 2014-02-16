@@ -17,9 +17,17 @@ define(['angular','_'], function() {
                     var User = $resource('services/v1/user/:userName', {},{get:{method: "GET"}});
                     User.get({userName: theUserName}).$promise.then(callback, errorCallback);
                   },
-                  createUser : function(newUserName, callback, errorCallback){
-                        var User = $resource('services/v1/user/'+newUserName,{}, {save:{method: "PUT"}});
-                        User.save({userName: newUserName}).$promise.then(callback, errorCallback);
+                  saveUser : function(user, callback, errorCallback){
+                        var User = $resource('services/v1/user/' + user.userName,{}, {save:{method: "PUT"}});
+                        User.save({userName: user.userName},_.pick(user, 'userName', 'password','firstName', 'lastName', 'phoneNumber', 'email')).$promise.then(callback, errorCallback);
+                  },
+                  getUsers : function(callback, errorCallback){
+                    var Users = $resource('services/v1/user', {},{get:{method: "GET"}});
+                    Users.get({}).$promise.then(callback, errorCallback);
+                  },
+                  deleteUser: function(user,callback, errorCallback) {
+                    var User = $resource('services/v1/user/:userName');
+                    User.delete({userName: user.userName}, {}).$promise.then(callback,errorCallback);
                   }
 
             };
@@ -41,9 +49,14 @@ define(['angular','_'], function() {
                   getTeams : function(callback, errorCallback){
                        var Teams = $resource('services/v1/team', {},{get:{method: "GET"}});
                        Teams.get({teamName:""}).$promise.then(callback, errorCallback);
+                  },
+                  deleteTeam: function(team,callback, errorCallback) {
+                    var Team = $resource('services/v1/team/:teamName');
+                    Team.delete({teamName: team.teamName}, {}).$promise.then(callback,errorCallback);
                   }
 
             };
         }]);
+
 
 });

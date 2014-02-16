@@ -6,7 +6,7 @@ import cucumber.junit.Feature;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-//@Feature("org/github/morotsman/todo/autotest/story.feature")
+//@Feature("org/github/morotsman/todo/autotest/user.feature")
 public class RunCukesTest {
 
 

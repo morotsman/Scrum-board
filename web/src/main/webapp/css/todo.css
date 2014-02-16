@@ -14,5 +14,13 @@
 }
 
 
-.admin_list { list-style-type: none; margin: 0; padding: 0; width: 200px}
-.admin_list .selected_true { border:4px solid #F39814}
+.admin_list_container {float:left;border-right:1px solid black;margin-left: 10px}
+
+.admin_list {height:550px;width:150px; list-style-type: none; margin: 10px; padding: 0;overflow:auto}
+
+
+.admin_list .selected_true,.admin_list>li:hover,.admin_list>li:focus{text-decoration:none;color:#ffffff;background-color:#0081c2;background-image:-moz-linear-gradient(top, #0088cc, #0077b3);background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));background-image:-webkit-linear-gradient(top, #0088cc, #0077b3);background-image:-o-linear-gradient(top, #0088cc, #0077b3);background-image:linear-gradient(to bottom, #0088cc, #0077b3);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);}
+
+.admin_button_container {margin: 10px 0;border-top:1px solid black}
+
+.admin_editor  {float:left;margin: 10px}

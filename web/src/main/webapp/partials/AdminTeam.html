@@ -1,20 +1,23 @@
 <div ng-controller="AdminTeamController">
-    <div style="height:650px;width:200px;float:left;border:1px solid black;">
+    <div class="admin_list_container">
+        <h3>Teams</h3>
+
         <ul class="admin_list">
             <li ng:click="selectTeam($index)" ng-repeat="team in teamAdminData.teams" class="selected_{{team.selected}}">
                 {{team.teamName}}
             </li>
         </ul>
-        <div>
+        <div class="admin_button_container">
             <table>
                 <tr>
                     <td><button ng:click="newTeam()">New</button></td>
-                    <td><button ng:click="deleteTeam()">Delete</button></td>
+                    <td><button ng:click="deleteTeam()" ng-show="teamAdminData.selectedTeam">Delete</button></td>
                 </tr>
             </table>
         </div>
+
     </div>
-    <div ng-show="teamAdminData.selectedTeam">
+    <div ng-show="teamAdminData.selectedTeam" class="admin_editor">
         <h1>Update team</h1>
         <table>
             <tr>
@@ -30,7 +33,7 @@
             </tr>
         </table>
     </div>
-    <div ng-show="teamAdminData.createTeam">
+    <div ng-show="teamAdminData.createTeam" class="admin_editor">
         <h1>Create team</h1>
         <table>
             <tr>

@@ -18,23 +18,35 @@
 
     </div>
     <div ng-show="teamAdminData.selectedTeam" class="admin_editor">
-        <h1>Update team</h1>
-        <table>
-            <tr>
-                <td>Description</td>
-                <td>
-                    <input type="text" ng-model="teamAdminData.selectedTeam.description" required ng-trim="true">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button ng:click="saveTeam()">Save</button>
-                </td>
-            </tr>
-        </table>
+        <tabset>
+            <tab heading="Team">
+                <table>
+                    <tr>
+                        <td>Description</td>
+                        <td>
+                            <input type="text" ng-model="teamAdminData.selectedTeam.description" required ng-trim="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button ng:click="saveTeam()">Save</button>
+                        </td>
+                    </tr>
+                </table>
+            </tab>
+            <tab heading="Members">
+                <h4>Asynchronous results</h4>
+                <pre>Model: {{asyncSelected | json}}</pre>
+                <input type="text" ng-model="asyncSelected" placeholder="Users loaded via $http" typeahead="user for user in getUsers($viewValue) | filter:$viewValue" typeahead-loading="loadingUsers" class="form-control">
+                <i ng-show="loadingUsers" class="glyphicon glyphicon-refresh"></i>
+            </tab>
+        </tabset>
     </div>
     <div ng-show="teamAdminData.createTeam" class="admin_editor">
         <h1>Create team</h1>
+
+
+
         <table>
             <tr>
                 <td>Name</td>

@@ -61,15 +61,25 @@ public class UserController extends ErrorHandler{
     @RequestMapping(value="/user", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    UsersDTO listUsers() {
-        List<User> users = userService.findUsers();
+    UsersDTO listUsers(@RequestParam(required = false) String partOfName) {
+        List<User> users;
+        if(partOfName == null){
+            users = userService.findUsers();
+        }else{
+            users = userService.findUsers(partOfName);
+        }
         UsersDTO result = new UsersDTO();
         for(User user: users){
             result.getUsers().add(toUserDTO(user,false));
         }
-        result.add(linkTo(methodOn(UserController.class).listUsers()).withSelfRel());
+        result.add(linkTo(methodOn(UserController.class).listUsers(partOfName)).withSelfRel());
         return result;
     }
+
+
+
+
+
 
     @RequestMapping(value="/user/{userName}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)

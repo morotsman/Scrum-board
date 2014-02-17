@@ -19,7 +19,7 @@ import java.io.UnsupportedEncodingException;
 
 public class UserSteps {
 
-    private static final String BASE_URL = "http://localhost:8080/todo/services/v1/user/";
+    private static final String BASE_URL = "http://localhost:8080/todo/services/v1/user";
 
     private RestHelper<UserDTO> userHelperImpl = TestContext.instance().getUserHelperImpl();
 
@@ -42,7 +42,7 @@ public class UserSteps {
         userDTO.setPhoneNumber("aPhoneNumber");
         userDTO.setEmail("email@something.com");
 
-        Assert.assertEquals("Could not create user " + user,201, userHelperImpl.putResource(BASE_URL + user, userDTO).getStatusCode().value());
+        Assert.assertEquals("Could not create user " + user,201, userHelperImpl.putResource(BASE_URL +"/" +user, userDTO).getStatusCode().value());
     }
 
 
@@ -68,24 +68,24 @@ public class UserSteps {
     }
     */
 
-    @When("^the client requests GET /user$")
-    public void executing_GET_user() {
-        response = userHelperImpl.getResource(BASE_URL);
+    @When("^the client lists users with GET /user(.*)$")
+    public void executing_GET_user(String requestParameters) {
+        response = userHelperImpl.getResource(BASE_URL + requestParameters);
     }
 
     @When("^the client requests PUT /user/(.*)$")
     public void executing_PUT_user(String userName) throws IOException {
-        response = userHelperImpl.putResource(BASE_URL + userName,requestBody);
+        response = userHelperImpl.putResource(BASE_URL + "/"+ userName,requestBody);
     }
 
     @When("^the client requests DELETE /user/(.*)")
     public void the_client_requests_DELETE_user(String userName) {
-        response =  userHelperImpl.deleteResource(BASE_URL + userName);
+        response =  userHelperImpl.deleteResource(BASE_URL +"/" +userName);
     }
 
     @When("^the client requests GET /user/(.*)")
     public void the_client_requests_GET_user(String userName) {
-        response = userHelperImpl.getResource(BASE_URL + userName);
+        response = userHelperImpl.getResource(BASE_URL + "/"+userName);
     }
 
     @Then("^the status code for the user request should be (\\d+)$")

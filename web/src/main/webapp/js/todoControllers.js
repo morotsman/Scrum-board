@@ -10,7 +10,7 @@ define(['angular','_'], function() {
 
     }]);
 
-    todoControllers.controller('AdminTeamController', ['$scope','teamDao', function($scope, teamDao) {
+    todoControllers.controller('AdminTeamController', ['$scope','teamDao','$http', function($scope, teamDao, $http) {
 
         $scope.teamAdminData = {};
 
@@ -64,6 +64,16 @@ define(['angular','_'], function() {
             teamDao.deleteTeam($scope.teamAdminData.selectedTeam, success, failure);
             deselectAllTeams();
         }
+
+         $scope.getUsers = function(value){
+                    return $http.get('services/v1/user?partOfName=' + value, {})
+                        .then(function(response){
+                            return  _.reduce(response.data.users, function(memo, user){
+                                memo.push(user.userName);
+                                return memo;
+                            }, []);
+                    });
+         };
 
         loadTeams();
 

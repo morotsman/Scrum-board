@@ -3,11 +3,11 @@ Feature: Test to user administration
 @TestContext
 Scenario: List all users
 Given the System knows about the users: Niklas,Lena,Hektor,Beata
-When the client requests GET /user
+When the client lists users with GET /user
 Then the status code for the user request should be 200
 And the response should be JSON:
   """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user?partOfName"}],
 "users":[
     {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Beata"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
     "userName":"Beata","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"},
@@ -20,12 +20,27 @@ And the response should be JSON:
 """
 
 @TestContext
-Scenario: List users when no users exists
-When the client requests GET /user
+Scenario: List all users that start with Ni
+Given the System knows about the users: Niklas,Lena,Hektor,Beata,Nicke
+When the client lists users with GET /user?partOfName=Ni
 Then the status code for the user request should be 200
 And the response should be JSON:
   """
-{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],"users":[]}
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user?partOfName=Ni"}],
+"users":[
+    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Nicke"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
+    "userName":"Nicke","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"},
+    {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},{"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],
+    "userName":"Niklas","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"}]}
+"""
+
+@TestContext
+Scenario: List users when no users exists
+When the client lists users with GET /user
+Then the status code for the user request should be 200
+And the response should be JSON:
+  """
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user?partOfName"}],"users":[]}
   """
 
 @TestContext
@@ -119,12 +134,12 @@ Scenario: List users that belong to teams
 Given the System knows about the user: Niklas
 And the System knows about the team: aTeam
 And that the user:Niklas is member of the team:aTeam
-When the client requests GET /user
+When the client lists users with GET /user
 Then the status code for the user request should be 200
 And the response should be JSON:
   """
 {"links":
-[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user"}],
+[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user?partOfName"}],
 "users":[
     {"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/user/Niklas"},
     {"rel":"teams","href":"http://localhost:8080/todo/services/v1/team"}],"userName":"Niklas","password":null,"firstName":"aName","lastName":"aLastName","email":"email@something.com","phoneNumber":"aPhoneNumber"}]}

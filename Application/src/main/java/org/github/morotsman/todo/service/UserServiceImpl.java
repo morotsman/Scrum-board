@@ -38,14 +38,31 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-
     @Override
-    @Transactional
     public List<User> findUsers() {
         User user = new User();
         user.setRole("ROLE_USER");
         List<User> result = userRepository.findByExample(user);
+        for(User each: result){
+            System.out.println("************************** " + each.getName() + " " + each.getRole());
+        }
+        Collections.sort(result, new Comparator<User>() {
+            @Override
+            public int compare(User user, User user1) {
+                return user.getName().compareTo(user1.getName());
+            }
+        }
+        );
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public List<User> findUsers(String partOfName) {
+        User user = new User();
+        user.setRole("ROLE_USER");
+        user.setName(partOfName);
+        List<User> result = userRepository.findUserLike(user);
         for(User each: result){
             System.out.println("************************** " + each.getName() + " " + each.getRole());
         }

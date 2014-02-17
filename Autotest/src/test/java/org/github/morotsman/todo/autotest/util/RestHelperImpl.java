@@ -73,8 +73,8 @@ public class RestHelperImpl<T> implements RestHelper<T> {
         try{
             HttpEntity<T> requestEntity = new HttpEntity<T>(getLoginHeaders());
             String resource =  "{resourcePath}";
-            return restTemplate.exchange(resource,
-                    HttpMethod.GET, requestEntity, String.class,resourcePath);
+            return restTemplate.exchange(resourcePath,
+                    HttpMethod.GET, requestEntity, String.class);
         }catch(HttpClientErrorException e){
             return new ResponseEntity<String>(e.getStatusCode());
         }

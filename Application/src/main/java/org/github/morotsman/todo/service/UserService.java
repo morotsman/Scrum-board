@@ -11,6 +11,8 @@ public interface UserService {
 
     public List<User> findUsers();
 
+    public List<User> findUsers(String partOfName);
+
     public void deleteUser(String userName);
 
     public User getUser(String userName);

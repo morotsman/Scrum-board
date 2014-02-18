@@ -58,5 +58,34 @@ define(['angular','_'], function() {
             };
         }]);
 
+    myModule.factory('membershipDao', ['$resource', function($resource) {
+
+            var getMembershipLink = function(objectWithLinks, linkToFind){
+                return _.chain(objectWithLinks.links)
+                                .filter(function(link){
+                                    return link.rel === linkToFind;
+                                 })
+                                .map(function(link){
+                                    return link.href;
+                                })
+                                .value()[0];
+            }
+
+
+            return {
+                  createMembership : function(team, theUserName, callback, errorCallback){
+                        var membershipLink = getMembershipLink(team, "membership");
+                        var Membership = $resource(membershipLink + '/' + theUserName,{}, {save:{method: "PUT"}});
+                        Membership.save({userName: theUserName}).$promise.then(callback, errorCallback);
+                  },
+                  getMemberships : function(team, callback, errorCallback){
+                     var membershipLink = getMembershipLink(team, "membership");
+                     var Memberships = $resource(membershipLink, {},{get:{method: "GET"}});
+                     Memberships.get({teamName: ""}).$promise.then(callback, errorCallback);
+                  }
+
+            };
+        }]);
+
 
 });

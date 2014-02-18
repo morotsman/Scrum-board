@@ -35,10 +35,21 @@
                 </table>
             </tab>
             <tab heading="Members">
-                <h4>Asynchronous results</h4>
-                <pre>Model: {{asyncSelected | json}}</pre>
-                <input type="text" ng-model="asyncSelected" placeholder="Users loaded via $http" typeahead="user for user in getUsers($viewValue) | filter:$viewValue" typeahead-loading="loadingUsers" class="form-control">
-                <i ng-show="loadingUsers" class="glyphicon glyphicon-refresh"></i>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="text" ng-model="teamAdminData.userToAdd" placeholder="Add user to team." typeahead="user for user in getUsers($viewValue) | filter:$viewValue" typeahead-loading="loadingUsers" class="form-control">
+                            <i ng-show="loadingUsers" class="glyphicon glyphicon-refresh"></i>
+                        </td>
+                        <td><button ng:click="addUserToTeam()">Add</button></td>
+                    </tr>
+                </table>
+
+
+                <div class="gridStyle" ng-grid="gridOptions">
+                </div>
+
+
             </tab>
         </tabset>
     </div>

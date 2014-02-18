@@ -8,7 +8,8 @@ define([
 	'menuControllers',
 	'angularRoute',
         'ngResource',
-        'ui_bootstrap'
+        'ui_bootstrap',
+        'ngGrid'
 	], function () {
 		'use strict';
 
@@ -21,7 +22,8 @@ define([
                         'ui.sortable',
                         'ui.keypress',
                         'ngResource',
-                        'ui.bootstrap'
+                        'ui.bootstrap',
+                        'ngGrid'
                        
 		]);
 });

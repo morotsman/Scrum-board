@@ -11,7 +11,8 @@ require.config({
                 ngResource: "external/angular-resource/angular-resource.min",
                 ui_bootstrap : "external/angular-bootstrap/ui-bootstrap-tpls.min",
                 diff_match_patch : "external/diff-match-patch/diff_match_patch",
-                _ : "external/underscore/underscore-min"
+                _ : "external/underscore/underscore-min",
+                ngGrid : "external/ng-grid/ng-grid-2.0.7.min"
                  
 	},
 	baseUrl: 'js',
@@ -34,6 +35,9 @@ require.config({
                  },
                  'ui_bootstrap' :{
                     deps:['angular'] 
+                 },
+                 'ngGrid':{
+                    deps:['jquery', 'angular']
                  }
 	},
 	priority: [

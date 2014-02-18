@@ -10,11 +10,9 @@ define(['angular','_'], function() {
 
     }]);
 
-    todoControllers.controller('AdminTeamController', ['$scope','teamDao','$http', function($scope, teamDao, $http) {
+    todoControllers.controller('AdminTeamController', ['$scope','teamDao','$http','membershipDao', 'userDao', function($scope, teamDao, $http, membershipDao, userDao) {
 
         $scope.teamAdminData = {};
-
-
 
         var teamsLoaded = function(data){
             $scope.teamAdminData.teams = data.teams;
@@ -31,9 +29,32 @@ define(['angular','_'], function() {
 
         $scope.selectTeam = function(index){
            deselectAllTeams();
-           $scope.teamAdminData.selectedTeam =  _.pick($scope.teamAdminData.teams[index], 'teamName', 'description');
+           $scope.teamAdminData.selectedTeam =  $scope.teamAdminData.teams[index];
            $scope.teamAdminData.teams[index].selected = true;
            $scope.teamAdminData.createTeam = undefined;
+           loadMembers();
+        };
+
+        var loadMembers = function(){
+            membershipDao.getMemberships($scope.teamAdminData.selectedTeam, membersLoaded, failure);
+        };
+
+
+        var membersLoaded = function(data){
+            var users = _.chain(data.memberships)
+                        .map(function(membership){
+                            return membership.userName;
+                        })
+                        .value();
+
+            $scope.teamAdminData.members = [];
+            _.each(users, function(user){
+                userDao.getUser(user, userLoaded, failure)
+            });
+        };
+
+        var userLoaded = function(data){
+            $scope.teamAdminData.members.push(_.pick(data,'userName', 'firstName', 'lastName', 'email', 'phoneNumber'));
         };
 
         $scope.newTeam = function(){
@@ -53,17 +74,17 @@ define(['angular','_'], function() {
         $scope.createTeam = function(){
             teamDao.saveTeam($scope.teamAdminData.createTeam, success, failure);
             $scope.teamAdminData.createTeam = undefined;
-        }
+        };
 
         $scope.saveTeam = function(){
             teamDao.saveTeam($scope.teamAdminData.selectedTeam, success, failure);
             deselectAllTeams();
-        }
+        };
 
         $scope.deleteTeam = function(){
             teamDao.deleteTeam($scope.teamAdminData.selectedTeam, success, failure);
             deselectAllTeams();
-        }
+        };
 
          $scope.getUsers = function(value){
                     return $http.get('services/v1/user?partOfName=' + value, {})
@@ -74,6 +95,17 @@ define(['angular','_'], function() {
                             }, []);
                     });
          };
+
+         var userAdded = function(data){
+            loadMembers();
+         }
+
+         $scope.addUserToTeam = function(){
+            membershipDao.createMembership($scope.teamAdminData.selectedTeam, $scope.teamAdminData.userToAdd, userAdded, failure)
+         }
+
+         $scope.teamAdminData.members = [];
+         $scope.gridOptions = { data: 'teamAdminData.members' };
 
         loadTeams();
 

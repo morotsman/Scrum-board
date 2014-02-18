@@ -24,3 +24,9 @@
 .admin_button_container {margin: 10px 0;border-top:1px solid black}
 
 .admin_editor  {float:left;margin: 10px}
+
+.gridStyle {
+border: 1px solid rgb(212,212,212);
+width: 400px;
+height: 300px
+}

@@ -82,6 +82,11 @@ define(['angular','_'], function() {
                      var membershipLink = getMembershipLink(team, "membership");
                      var Memberships = $resource(membershipLink, {},{get:{method: "GET"}});
                      Memberships.get({teamName: ""}).$promise.then(callback, errorCallback);
+                  },
+                  deleteMembership : function(team, theUserName, callback, errorCallback){
+                    var membershipLink = getMembershipLink(team, "membership");
+                    var Membership = $resource(membershipLink + '/' + theUserName);
+                    Membership.delete({userName: theUserName}, {}).$promise.then(callback,errorCallback);
                   }
 
             };

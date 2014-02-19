@@ -35,28 +35,6 @@ define(['angular','_'], function() {
            loadMembers();
         };
 
-        var loadMembers = function(){
-            membershipDao.getMemberships($scope.teamAdminData.selectedTeam, membersLoaded, failure);
-        };
-
-
-        var membersLoaded = function(data){
-            var users = _.chain(data.memberships)
-                        .map(function(membership){
-                            return membership.userName;
-                        })
-                        .value();
-
-            $scope.teamAdminData.members = [];
-            _.each(users, function(user){
-                userDao.getUser(user, userLoaded, failure)
-            });
-        };
-
-        var userLoaded = function(data){
-            $scope.teamAdminData.members.push(_.pick(data,'userName', 'firstName', 'lastName', 'email', 'phoneNumber'));
-        };
-
         $scope.newTeam = function(){
             deselectAllTeams();
             $scope.teamAdminData.selectedTeam = undefined;
@@ -86,6 +64,28 @@ define(['angular','_'], function() {
             deselectAllTeams();
         };
 
+
+
+        var userLoaded = function(data){
+            $scope.teamAdminData.members.push(_.pick(data,'userName', 'firstName', 'lastName', 'email', 'phoneNumber'));
+        };
+
+        var loadMembers = function(){
+            membershipDao.getMemberships($scope.teamAdminData.selectedTeam, membersLoaded, failure);
+        };
+
+
+        var membersLoaded = function(data){
+            var users = _.map(data.memberships, function(membership){
+                            return membership.userName;
+                        });
+
+            $scope.teamAdminData.members = [];
+            _.each(users, function(user){
+                userDao.getUser(user, userLoaded, failure)
+            });
+        };
+
          $scope.getUsers = function(value){
                     return $http.get('services/v1/user?partOfName=' + value, {})
                         .then(function(response){
@@ -98,16 +98,33 @@ define(['angular','_'], function() {
 
          var userAdded = function(data){
             loadMembers();
-         }
+         };
 
          $scope.addUserToTeam = function(){
             membershipDao.createMembership($scope.teamAdminData.selectedTeam, $scope.teamAdminData.userToAdd, userAdded, failure)
-         }
+         };
+
+
+         $scope.removeUserFromTeam = function(){
+            _.each($scope.gridOptions.selectedItems, function(membership){
+                membershipDao.deleteMembership($scope.teamAdminData.selectedTeam, membership.userName, function(){
+                   $scope.teamAdminData.members = _.filter($scope.teamAdminData.members, function(member){ return member.userName !== membership.userName;})
+                }
+                , failure)
+            });
+            $scope.gridOptions.selectedItems.length = 0;
+
+         };
 
          $scope.teamAdminData.members = [];
-         $scope.gridOptions = { data: 'teamAdminData.members' };
+         $scope.gridOptions = {
+                                data: 'teamAdminData.members',
+                                showFilter : true,
+                                selectedItems: [],
+                                keepLastSelected: false
+                              };
 
-        loadTeams();
+         loadTeams();
 
 
     }]);

@@ -1,7 +1,7 @@
 define(['angular','_'], function() {
     'use strict';
 
-    var menuControllers =  angular.module('myApp.menuControllers', ['myApp.services']);
+    var menuControllers =  angular.module('myApp.menuControllers', ['myApp.daos']);
             // Sample controller where service is being used
 
     menuControllers.controller('MenuController', ['$scope','$location', function($scope,$location) {

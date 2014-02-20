@@ -2,9 +2,9 @@ define([
 	'angular',
         'ui_sortable',
         'ui_keypress',
-	'services',
+	'daos',
 	'directives',
-	'todoControllers',
+	'adminControllers',
 	'menuControllers',
 	'angularRoute',
         'ngResource',
@@ -15,9 +15,9 @@ define([
 
 		return angular.module('myApp', [
 			'ngRoute',
-			'myApp.todoControllers',
+			'myApp.adminControllers',
 			'myApp.menuControllers',
-			'myApp.services',
+			'myApp.daos',
 			'myApp.directives',
                         'ui.sortable',
                         'ui.keypress',

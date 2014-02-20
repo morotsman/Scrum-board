@@ -1,16 +1,16 @@
 define(['angular','_'], function() {
     'use strict';
 
-    var todoControllers =  angular.module('myApp.todoControllers', ['myApp.services']);
+    var adminControllers =  angular.module('myApp.adminControllers', ['myApp.daos']);
             // Sample controller where service is being used
 
 
-    todoControllers.controller('PersonalController', ['$scope', function($scope) {
+    adminControllers.controller('PersonalController', ['$scope', function($scope) {
 
 
     }]);
 
-    todoControllers.controller('AdminTeamController', ['$scope','teamDao','$http','membershipDao', 'userDao', function($scope, teamDao, $http, membershipDao, userDao) {
+    adminControllers.controller('AdminTeamController', ['$rootScope','$scope','teamDao','$http','membershipDao', 'userDao', function($rootScope,$scope, teamDao, $http, membershipDao, userDao) {
 
         $scope.teamAdminData = {};
 
@@ -45,12 +45,19 @@ define(['angular','_'], function() {
             loadTeams();
         };
 
+         var teamCreated = function(){
+            $rootScope.$broadcast('TeamCreated', $scope.teamAdminData.selectedTeam);
+            loadTeams();
+         };
+
+
+
         var failure = function(failure){
             alert("Failure");
         };
 
         $scope.createTeam = function(){
-            teamDao.saveTeam($scope.teamAdminData.createTeam, success, failure);
+            teamDao.saveTeam($scope.teamAdminData.createTeam, teamCreated, failure);
             $scope.teamAdminData.createTeam = undefined;
         };
 
@@ -129,7 +136,8 @@ define(['angular','_'], function() {
 
     }]);
 
-    todoControllers.controller('AdminUserController', ['$scope','userDao', function($scope, userDao) {
+
+    adminControllers.controller('AdminUserController', ['$scope','userDao', function($scope, userDao) {
         $scope.userAdminData = {};
 
 
@@ -187,17 +195,17 @@ define(['angular','_'], function() {
 
     }]);
 
-    todoControllers.controller('TeamOverviewController', ['$scope', function($scope) {
+    adminControllers.controller('TeamOverviewController', ['$scope', function($scope) {
 
 
     }]);
 
-    todoControllers.controller('BoardController', ['$scope', function($scope) {
+    adminControllers.controller('BoardController', ['$scope', function($scope) {
 
 
     }]);
 
-    return todoControllers;
+    return adminControllers;
 
 
 

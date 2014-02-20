@@ -1,7 +1,7 @@
 define(['angular','_'], function() {
     'use strict';
 
-    var myModule = angular.module('myApp.services', []);
+    var myModule = angular.module('myApp.daos', []);
     myModule.value('version', '0.1');
 
 

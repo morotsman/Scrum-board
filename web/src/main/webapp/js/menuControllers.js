@@ -4,7 +4,7 @@ define(['angular','_'], function() {
     var menuControllers =  angular.module('myApp.menuControllers', ['myApp.daos']);
             // Sample controller where service is being used
 
-    menuControllers.controller('MenuController', ['$scope','$location', 'teamDao', function($scope,$location, teamDao) {
+    menuControllers.controller('MenuController', ['$rootScope','$scope','$location', 'teamDao','todoService', function( $rootScope, $scope,$location, teamDao, todoService) {
 
         $scope.menuData = {};
 
@@ -18,6 +18,7 @@ define(['angular','_'], function() {
         };
 
         $scope.showTeamOverview = function(teamIndex){
+            todoService.setTeamToOverview($scope.menuData.teams[teamIndex]);
             $location.url('/TeamOverviewView');
         };
 
@@ -51,6 +52,8 @@ define(['angular','_'], function() {
 
 
     }]);
+
+
 
 
 

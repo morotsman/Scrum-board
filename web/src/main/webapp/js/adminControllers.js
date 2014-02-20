@@ -195,10 +195,11 @@ define(['angular','_'], function() {
 
     }]);
 
-    adminControllers.controller('TeamOverviewController', ['$scope', function($scope) {
-
+    adminControllers.controller('TeamOverviewController', ['$scope','todoService', function($scope, todoService) {
+        alert(todoService.getTeamToOverview().teamName);
 
     }]);
+
 
     adminControllers.controller('BoardController', ['$scope', function($scope) {
 

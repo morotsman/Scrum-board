@@ -25,7 +25,7 @@
                             <a class="dropdown-toggle">Team overview</a>
                             <ul class="dropdown-menu">
                                 <li ng:click="showTeamOverview($index)" ng-repeat="team in menuData.teams">
-                                    <a>{{team}}</a>
+                                    <a>{{team.teamName}}</a>
                                 </li>
                             </ul>
                         </li>
@@ -37,7 +37,7 @@
                             <a class="dropdown-toggle">Boards</a>
                             <ul class="dropdown-menu">
                                 <li ng:click="showBoard($index)" ng-repeat="team in menuData.teams">
-                                    <a>{{team}}</a>
+                                    <a>{{team.teamName}}</a>
                                 </li>
                             </ul>
                         </li>

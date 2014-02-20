@@ -4,16 +4,10 @@ define(['angular','_'], function() {
     var menuControllers =  angular.module('myApp.menuControllers', ['myApp.daos']);
             // Sample controller where service is being used
 
-    menuControllers.controller('MenuController', ['$scope','$location', function($scope,$location) {
+    menuControllers.controller('MenuController', ['$scope','$location', 'teamDao', function($scope,$location, teamDao) {
 
         $scope.menuData = {};
 
-
-        $scope.menuData.teams = [
-            "Team 1",
-            "Team 2",
-            "Team 3"
-          ];
 
         $scope.adminTeam = function(){
             $location.url('/AdminTeamView');
@@ -25,11 +19,31 @@ define(['angular','_'], function() {
 
         $scope.showTeamOverview = function(teamIndex){
             $location.url('/TeamOverviewView');
-        }
+        };
 
         $scope.showBoard = function(teamIndex){
             $location.url('/BoardView');
         }
+
+        var loadTeams = function(){
+            teamDao.getTeams(teamsLoaded, failure);
+        };
+
+        var teamsLoaded = function(data){
+            $scope.menuData.teams = data.teams;
+        }
+
+        var failure = function(failure){
+            alert("Failure");
+        };
+
+        $scope.$on('TeamCreated', function() {
+            loadTeams();
+        });
+
+
+        loadTeams();
+
 
     }]);
 

@@ -28,8 +28,14 @@ define(['angular', 'app'], function(angular, app) {
         });
 
 		$routeProvider.otherwise({redirectTo: '/PersonalView'});
-	}]).run(function($rootScope, $location) {
+	}]).run(function($rootScope, $location, todoService) {
 
-        });
+	    if(todoService.getTeamToOverview() === undefined){
+	       $location.path( "/PersonalView" );
+	    }
+	    if(todoService.getTeamToShowBoard() === undefined){
+            $location.path( "/PersonalView" );
+        }
+    });
 
 });

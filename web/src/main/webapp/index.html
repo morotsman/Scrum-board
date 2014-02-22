@@ -17,7 +17,7 @@
         <table>
             <tr>
                 <td>
-                    <H3 style="margin-left: 10px; color:#CF0000">Todo</H3>
+                    <H3 style="margin-left: 10px; color:#CF0000" ng:click="showPersonal()">Todo</H3>
                 </td>
                 <td style="margin-left: 70px">
                     <div class="dropDownMenu">
@@ -25,7 +25,7 @@
                             <a class="dropdown-toggle">Team overview</a>
                             <ul class="dropdown-menu">
                                 <li ng:click="showTeamOverview($index)" ng-repeat="team in menuData.teams">
-                                    <a>{{team.teamName}}</a>
+                                    <a ng-bind="team.teamName"></a>
                                 </li>
                             </ul>
                         </li>
@@ -37,7 +37,7 @@
                             <a class="dropdown-toggle">Boards</a>
                             <ul class="dropdown-menu">
                                 <li ng:click="showBoard($index)" ng-repeat="team in menuData.teams">
-                                    <a>{{team.teamName}}</a>
+                                    <a ng-bind="team.teamName"></a>
                                 </li>
                             </ul>
                         </li>

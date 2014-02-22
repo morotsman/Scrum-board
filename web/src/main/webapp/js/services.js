@@ -5,7 +5,8 @@ define(['angular','_'], function() {
 
 
     myModule.factory('todoService', function() {
-        var teamToOverview;
+         var teamToOverview;
+         var teamToShowBoard;
 
 
          return {
@@ -14,6 +15,11 @@ define(['angular','_'], function() {
                      },
                      setTeamToOverview: function(team) {
                          teamToOverview = team;
+                     },getTeamToShowBoard: function() {
+                        return teamToShowBoard;
+                     },
+                     setTeamToShowBoard: function(team) {
+                        teamToShowBoard = team;
                      }
                  };
     });

@@ -8,6 +8,9 @@ define(['angular','_'], function() {
 
         $scope.menuData = {};
 
+        $scope.showPersonal = function(){
+           $location.url('/PersonalView');
+        };
 
         $scope.adminTeam = function(){
             $location.url('/AdminTeamView');

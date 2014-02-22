@@ -196,7 +196,22 @@ define(['angular','_'], function() {
     }]);
 
     adminControllers.controller('TeamOverviewController', ['$scope','todoService', function($scope, todoService) {
-        alert(todoService.getTeamToOverview().teamName);
+
+        $scope.teamOverviewData = {};
+
+        $scope.teamOverviewData.team = todoService.getTeamToOverview();
+
+        alert($scope.teamOverviewData.team.teamName);
+
+        var teamChanged = function(){
+            $scope.teamOverviewData.team = todoService.getTeamToOverview();
+            alert($scope.teamOverviewData.team.teamName);
+        };
+
+
+
+        $scope.$on('TeamOverviewSelected', teamChanged);
+
 
     }]);
 

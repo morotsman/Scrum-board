@@ -6,6 +6,7 @@ import org.github.morotsman.todo.model.team.Team;
 import org.github.morotsman.todo.model.user.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MembershipService {
 
@@ -15,6 +16,6 @@ public interface MembershipService {
 
     public Membership findMembership(String userName, String teamName);
 
-    public List<Membership> listMemberships(String teamName);
+    public Set<Membership> listMemberships(String teamName);
 
 }

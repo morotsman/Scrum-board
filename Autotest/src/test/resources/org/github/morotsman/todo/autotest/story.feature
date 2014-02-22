@@ -124,3 +124,21 @@ And the stories response should be JSON:
         "stories":[]
 }
 """
+
+
+@TestContext
+Scenario: Verify that another teams stories are not listed
+Given the System knows about the teams: aTeam,bTeam
+And that the team: aTeam has the stories: aStory,bStory
+When the clients creates a story with GET /team/bTeam/story
+Then the status code for the stories request should be 200
+And the stories response should be JSON:
+"""
+{
+    "links":[
+        {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/bTeam/story"}
+        ],
+        "stories":[
+        ]
+}
+"""

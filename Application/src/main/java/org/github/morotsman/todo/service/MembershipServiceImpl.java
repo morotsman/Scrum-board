@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MembershipServiceImpl implements MembershipService {
@@ -51,15 +53,13 @@ public class MembershipServiceImpl implements MembershipService {
 
     @Transactional
     @Override
-    public List<Membership> listMemberships(String teamName) {
+    public Set<Membership> listMemberships(String teamName) {
         return getMemberships(teamName);
     }
 
-    private List<Membership> getMemberships(String teamName) {
-        Membership example = new Membership();
+    private Set<Membership> getMemberships(String teamName) {
         Team team = teamService.getTeam(teamName);
-        example.setTeam(team);
-        return membershipRepository.findByExample(example);
+        return team.getMemberships();
     }
 
     @Resource

@@ -8,16 +8,17 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 
 
 @Component
-public class StoriesToStoriesDTO implements Converter<List<Story>, StoriesDTO> {
+public class StoriesToStoriesDTO implements Converter<Collection<Story>, StoriesDTO> {
 
     private StoryToStoryDTO storyToStoryDTO;
 
     @Override
-    public StoriesDTO convert(List<Story> stories) {
+    public StoriesDTO convert(Collection<Story> stories) {
         StoriesDTO result = new StoriesDTO();
         for(Story each: stories){
             result.getStories().add(storyToStoryDTO.convert(each));

@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -62,7 +63,7 @@ public class MembershipController extends ErrorHandler{
     @RequestMapping(value="/team/{teamName}/membership", method = RequestMethod.GET)
     @ResponseBody
     public MembershipsDTO listMemberships(@PathVariable String teamName){
-        List<Membership> memberships = membershipService.listMemberships(teamName);
+        Set<Membership> memberships = membershipService.listMemberships(teamName);
         MembershipsDTO result = new MembershipsDTO();
         for(Membership each: memberships){
             result.getMemberships().add(toMembershipDTO(each,teamName,each.getUser().getName()));

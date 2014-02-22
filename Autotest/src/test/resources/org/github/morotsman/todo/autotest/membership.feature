@@ -15,7 +15,7 @@ And the membership response should be JSON:
 ],"teamName":"theTeam","userName":"Niklas"}
 """
 
-@TestContext
+#@TestContext
 Scenario: Add a non existing user to a team
 Given the System knows about the user: Niklas
 And the System knows about the team: theTeam
@@ -106,6 +106,36 @@ And the memberships response should be JSON:
             ],
             "teamName":"theTeam","userName":"Niklas"
         }
+     ]
+}
+"""
+
+@TestContext
+Scenario: List all memberships for a team when there are no members
+Given the System knows about the user: Niklas
+And the System knows about the team: theTeam
+When the client request information about memberships with GET /team/theTeam/membership
+Then the status code for the memberships request should be 200
+And the memberships response should be JSON:
+"""
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/theTeam/membership"}],
+    "memberships":[
+     ]
+}
+"""
+
+
+@TestContext
+Scenario: Verify that a user is only member of the team that he applied for membership for
+Given the System knows about the user: Niklas
+And the System knows about the teams: theTeam,anotherTeam
+And that the user:Niklas is member of the team:theTeam
+When the client request information about memberships with GET /team/anotherTeam/membership
+Then the status code for the memberships request should be 200
+And the memberships response should be JSON:
+"""
+{"links":[{"rel":"self","href":"http://localhost:8080/todo/services/v1/team/anotherTeam/membership"}],
+    "memberships":[
      ]
 }
 """

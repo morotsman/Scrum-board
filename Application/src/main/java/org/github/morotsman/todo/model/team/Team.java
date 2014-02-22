@@ -26,11 +26,13 @@ public class Team {
 
     @OneToMany(mappedBy = "team")
     @org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    @OrderBy("name")
     private Set<Sprint> sprints = new TreeSet<Sprint>();
 
 
     @OneToMany(mappedBy = "team")
     @org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    @OrderBy("name")
     private Set<Story> backlog = new HashSet<Story>();
 
     @Id
@@ -97,5 +99,22 @@ public class Team {
 
     public void setBacklog(Set<Story> backlog) {
         this.backlog = backlog;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Team team = (Team) o;
+
+        if (name != null ? !name.equals(team.name) : team.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }

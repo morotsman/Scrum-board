@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -65,8 +66,8 @@ public class StoryServiceImpl implements StoryService{
     }
 
     @Override
-    public List<Story> findStories(String teamName) {
-        return sortSprints(findSprints(teamName));
+    public Set<Story> findStories(String teamName) {
+        return teamService.getTeam(teamName).getBacklog();
     }
 
     private List<Story> findSprints(String teamName){

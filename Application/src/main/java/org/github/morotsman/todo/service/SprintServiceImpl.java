@@ -25,8 +25,8 @@ public class SprintServiceImpl implements SprintService{
 
     @Transactional
     @Override
-    public List<Sprint> getSprints(String teamName) {
-        return sortSprints(findSprints(teamName));
+    public Set<Sprint> getSprints(String teamName) {
+        return teamService.getTeam(teamName).getSprints();
     }
 
     private List<Sprint> findSprints(String teamName){

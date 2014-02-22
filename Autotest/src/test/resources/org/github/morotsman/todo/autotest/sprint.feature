@@ -111,3 +111,42 @@ And the sprint response should be JSON:
 }
 """
 
+@TestContext
+Scenario: List sprints when non exists
+Given the System knows about the team: aTeam
+When the clients gets a sprint with GET /team/aTeam/sprint
+Then the status code for the sprint request should be 200
+And the sprint response should be JSON:
+"""
+{
+    "links":
+        [
+            {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/aTeam/sprint"},
+            {"rel":"team","href":"http://localhost:8080/todo/services/v1/team/aTeam"}
+        ],
+    "sprints":
+    [
+    ]
+}
+"""
+
+@TestContext
+Scenario: Verfify that sprints fpr another team is not listed
+Given the System knows about the teams: aTeam,bTeam
+And that the team: aTeam has the sprints: 2_14_3,2_14_4
+When the clients gets a sprint with GET /team/bTeam/sprint
+Then the status code for the sprint request should be 200
+And the sprint response should be JSON:
+"""
+{
+    "links":
+        [
+            {"rel":"self","href":"http://localhost:8080/todo/services/v1/team/bTeam/sprint"},
+            {"rel":"team","href":"http://localhost:8080/todo/services/v1/team/bTeam"}
+        ],
+    "sprints":
+    [
+    ]
+}
+"""
+

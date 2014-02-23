@@ -24,5 +24,31 @@ define(['angular','_'], function() {
                  };
     });
 
+    myModule.factory('linkService', function() {
+
+         return {
+            findLink : function(objectWithLinks, linkToFind){
+                return _.chain(objectWithLinks.links)
+                        .filter(function(link){
+                            return link.rel === linkToFind;
+                        })
+                        .map(function(link){
+                            return link.href;
+                        })
+                        .value()[0];
+            }
+            ,findLinks : function(objectWithLinks, linkToFind){
+                return _.chain(objectWithLinks.links)
+                        .filter(function(link){
+                            return link.rel === linkToFind;
+                        })
+                        .map(function(link){
+                            return link.href;
+                        })
+                        .value()[0];
+            }
+         };
+    });
+
 
 });

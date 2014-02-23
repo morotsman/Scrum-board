@@ -24,6 +24,14 @@ define(['angular','_'], function() {
 
         $scope.$on('TeamOverviewSelected', teamChanged);
 
+        $scope.addSprint = function(){
+
+        };
+
+        $scope.addStory = function(){
+
+        };
+
 
     }]);
 

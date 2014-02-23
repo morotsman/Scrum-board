@@ -28,14 +28,7 @@ define(['angular','_'], function() {
 
          return {
             findLink : function(objectWithLinks, linkToFind){
-                return _.chain(objectWithLinks.links)
-                        .filter(function(link){
-                            return link.rel === linkToFind;
-                        })
-                        .map(function(link){
-                            return link.href;
-                        })
-                        .value()[0];
+                return this.findLinks(objectWithLinks,linkToFind)[0];
             }
             ,findLinks : function(objectWithLinks, linkToFind){
                 return _.chain(objectWithLinks.links)
@@ -45,7 +38,7 @@ define(['angular','_'], function() {
                         .map(function(link){
                             return link.href;
                         })
-                        .value()[0];
+                        .value();
             }
          };
     });

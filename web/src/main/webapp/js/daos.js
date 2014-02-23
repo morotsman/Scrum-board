@@ -60,36 +60,48 @@ define(['angular','_'], function() {
 
     myModule.factory('membershipDao', ['$resource', 'linkService', function($resource, linkService) {
 
-            var getMembershipLink = function(objectWithLinks, linkToFind){
-                return _.chain(objectWithLinks.links)
-                                .filter(function(link){
-                                    return link.rel === linkToFind;
-                                 })
-                                .map(function(link){
-                                    return link.href;
-                                })
-                                .value()[0];
-            }
-
             return {
                   createMembership : function(team, theUserName, callback, errorCallback){
                         var membershipLink = linkService.findLink(team, "membership");
                         var Membership = $resource(membershipLink + '/' + theUserName,{}, {save:{method: "PUT"}});
-                        Membership.save({userName: theUserName}).$promise.then(callback, errorCallback);
+                        Membership.save().$promise.then(callback, errorCallback);
                   },
                   getMemberships : function(team, callback, errorCallback){
                      var membershipLink = linkService.findLink(team, "membership");
                      var Memberships = $resource(membershipLink, {},{get:{method: "GET"}});
-                     Memberships.get({teamName: ""}).$promise.then(callback, errorCallback);
+                     Memberships.get().$promise.then(callback, errorCallback);
                   },
                   deleteMembership : function(team, theUserName, callback, errorCallback){
                     var membershipLink = linkService.findLink(team, "membership");
                     var Membership = $resource(membershipLink + '/' + theUserName);
-                    Membership.delete({userName: theUserName}, {}).$promise.then(callback,errorCallback);
+                    Membership.delete().$promise.then(callback,errorCallback);
                   }
 
             };
         }]);
 
+
+    myModule.factory('sprintDao', ['$resource', 'linkService', function($resource, linkService) {
+
+
+            return {
+                  createSprint : function(team, theSprintName, callback, errorCallback){
+                        var link = linkService.findLink(team, "sprint");
+                        var Sprint = $resource(link + '/' + theSprintName,{}, {save:{method: "PUT"}});
+                        Sprint.save().$promise.then(callback, errorCallback);
+                  },
+                  getSprints : function(team, callback, errorCallback){
+                     var link = linkService.findLink(team, "sprint");
+                     var Sprint = $resource(link, {},{get:{method: "GET"}});
+                     Sprint.get().$promise.then(callback, errorCallback);
+                  },
+                  deleteSprint : function(team, theSprintName, callback, errorCallback){
+                    var link = linkService.findLink(team, "sprint");
+                    var Sprint = $resource(link + '/' + theSprintName);
+                    Sprint.delete().$promise.then(callback,errorCallback);
+                  }
+
+            };
+        }]);
 
 });

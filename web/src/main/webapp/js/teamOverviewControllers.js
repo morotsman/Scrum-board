@@ -7,7 +7,7 @@ define(['angular','_'], function() {
 
 
 
-    teamOverviewControllers.controller('TeamOverviewController', ['$scope','todoService', function($scope, todoService) {
+    teamOverviewControllers.controller('TeamOverviewController', ['$scope','todoService','$modal', function($scope, todoService, $modal) {
 
         $scope.teamOverviewData = {};
 
@@ -25,12 +25,26 @@ define(['angular','_'], function() {
         $scope.$on('TeamOverviewSelected', teamChanged);
 
         $scope.addSprint = function(){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/addSprint.html',
+                controller: 'AddSprintDialogController'
+            });
 
+            modalInstance.result.then(function(presentation) {
+                $scope.loadPresentation(presentation.id);
+            }, function() {
+                //Do nothing if not saving
+            });
         };
 
         $scope.addStory = function(){
 
         };
+
+
+    }]);
+
+    teamOverviewControllers.controller('AddSprintDialogController', ['$scope', function($scope) {
 
 
     }]);

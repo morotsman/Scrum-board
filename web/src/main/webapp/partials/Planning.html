@@ -7,11 +7,20 @@
                     <td>
                         <button ng:click="addSprint()">Add sprint</button>
                     </td>
-                    <td>
-                        <button ng:click="addStory()">Add story</button>
-                    </td>
                 </tr>
             </table>
+            <br>
+            <div class="floatleft">
+                <article ng-repeat="sprint in planningData.sprints" class="floatleft">
+                    <header>{{sprint.name}} <button ng:click="addStory($index)">Add story</button> <button ng:click="deleteSprint($index)">Delete sprint</button></header>
+                    <ul ui-sortable="planningData.sortableOptions" class="sprint stories-container" ng-model="sprint.stories">
+                        <li class="stories sortable" ng-repeat="story in sprint.stories" ng-class="sortable"> {{story.name}}</li>
+                    </ul>
+                </article>
+
+            </div>
+
+
         </tab>
         <tab heading="Sprint">
 

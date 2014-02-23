@@ -7,6 +7,7 @@ define([
 	'directives',
 	'adminControllers',
 	'menuControllers',
+	'teamOverviewControllers',
 	'angularRoute',
         'ngResource',
         'ui_bootstrap',
@@ -25,7 +26,8 @@ define([
                         'ui.keypress',
                         'ngResource',
                         'ui.bootstrap',
-                        'ngGrid'
+                        'ngGrid',
+                        'myApp.teamOverviewControllers'
                        
 		]);
 });

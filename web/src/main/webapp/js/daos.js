@@ -104,4 +104,27 @@ define(['angular','_'], function() {
             };
         }]);
 
+    myModule.factory('storyDao', ['$resource', 'linkService', function($resource, linkService) {
+
+
+            return {
+                  createStory : function(team, story, callback, errorCallback){
+                        var link = linkService.findLink(team, "story");
+                        var Story = $resource(link + '/' + story.name,{}, {save:{method: "PUT"}});
+                        Story.save({}, story).$promise.then(callback, errorCallback);
+                  },
+                  getStories : function(team, callback, errorCallback){
+                     var link = linkService.findLink(team, "story");
+                     var Story = $resource(link, {},{get:{method: "GET"}});
+                     Story.get().$promise.then(callback, errorCallback);
+                  },
+                  deleteStory : function(team, story, callback, errorCallback){
+                    var link = linkService.findLink(team, "story");
+                    var Story = $resource(link + '/' + story.name);
+                    Story.delete().$promise.then(callback,errorCallback);
+                  }
+
+            };
+        }]);
+
 });

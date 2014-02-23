@@ -7,7 +7,7 @@ define(['angular','_'], function() {
 
 
 
-    planningControllers.controller('PlanningController', ['$scope','todoService','$modal', 'sprintDao', function($scope, todoService, $modal, sprintDao) {
+    planningControllers.controller('PlanningController', ['$scope','todoService','$modal', 'sprintDao', 'storyDao', function($scope, todoService, $modal, sprintDao, storyDao) {
 
         $scope.planningData = {};
 
@@ -27,12 +27,10 @@ define(['angular','_'], function() {
 
         var sprintsLoaded = function(data){
             $scope.planningData.sprints = data.sprints;
-            _.map($scope.planningData.sprints, function(sprint){
-                sprint.stories = [];
-                sprint.stories.push({name:"hepp"});
-                return sprint;
-            });
             $scope.planningData.sprints.push({name:"Backlog", stories:[]});
+            _.each($scope.planningData.sprints, function(sprint){
+                loadStories(sprint);
+            });
         }
 
         var loadSprints = function(){
@@ -42,7 +40,7 @@ define(['angular','_'], function() {
         $scope.addSprint = function(){
             var modalInstance = $modal.open({
                 templateUrl: 'partials/addSprint.html',
-                controller: 'AddSprintDialogController'
+                controller: 'CreateSprintDialogController'
             });
 
             modalInstance.result.then(function(presentation) {
@@ -56,10 +54,37 @@ define(['angular','_'], function() {
             placeholder: "stories-placeholder",
             connectWith: ".stories-container",
             items: "> .sortable",
+            receive: function(e, ui)  {
+                  // ui.item -> item that will be received in the new list; scope undefined
+                  // ui.sender -> list that is the source of this item; scope != undefined; scope access to the modified source list
+                  console.log('receive item',ui.item.scope());
+                  console.log('receive sender',ui.sender.scope());
+                }
           };
+
+
+
+        var loadStories = function(sprint){
+            if(sprint.name === "Backlog"){
+                storyDao.getStories($scope.planningData.team, function(data){
+                    sprint.stories = data.stories;
+                }, failure);
+            }
+
+        };
 
         $scope.addStory = function(index){
             alert("add story for: " + $scope.planningData.sprints[index].name);
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/createStory.html',
+                controller: 'CreateStoryDialogController'
+            });
+
+            modalInstance.result.then(function(presentation) {
+                loadStories($scope.planningData.sprints[index]);
+            }, function() {
+                //cancel
+            });
         };
 
         loadSprints();
@@ -67,7 +92,7 @@ define(['angular','_'], function() {
 
     }]);
 
-    planningControllers.controller('AddSprintDialogController', ['$scope', '$modalInstance','sprintDao','todoService', function($scope, $modalInstance, sprintDao, todoService) {
+    planningControllers.controller('CreateSprintDialogController', ['$scope', '$modalInstance','sprintDao','todoService', function($scope, $modalInstance, sprintDao, todoService) {
 
             $scope.createSprintData = {};
 
@@ -77,11 +102,35 @@ define(['angular','_'], function() {
                     $modalInstance.close(data);
                 }, function(data){
                     if(data.status === 409){
-                        $scope.createSprintData.error = "A sprint called " + $scope.createSprintData.sprintName + " already exists";
+                        $scope.createSprintData.error = "A sprint called " + $scope.createSprintData.sprintName + " already exists.";
                     }else{
                         $scope.createSprintData.error = "Failed to create sprint due to " + data.status;
                     }
                 });
+
+            };
+
+            $scope.cancel = function() {
+                $modalInstance.dismiss('cancel');
+            };
+
+    }]);
+
+    planningControllers.controller('CreateStoryDialogController', ['$scope', '$modalInstance','storyDao','todoService', function($scope, $modalInstance, storyDao, todoService) {
+
+            $scope.createStoryData = {};
+
+            $scope.ok = function() {
+                 var result;
+                 storyDao.createStory(todoService.getTeamToShowBoard(), $scope.createStoryData.story, function(data){
+                     $modalInstance.close(data);
+                 }, function(data){
+                     if(data.status === 409){
+                         $scope.createStoryData.error = "A story called " + $scope.createStoryData.story.name + " already exists.";
+                     }else{
+                         $scope.createStoryData.error = "Failed to create story due to " + data.status;
+                     }
+                 });
 
             };
 

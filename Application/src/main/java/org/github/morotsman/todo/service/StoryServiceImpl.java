@@ -70,23 +70,6 @@ public class StoryServiceImpl implements StoryService{
         return teamService.getTeam(teamName).getBacklog();
     }
 
-    private List<Story> findSprints(String teamName){
-        Story example = new Story();
-        Team team = teamService.getTeam(teamName);
-        example.setTeam(team);
-        return  storyRepository.findByExample(example);
-    }
-
-    private List<Story> sortSprints(List<Story> result) {
-        Collections.sort(result, new Comparator<Story>() {
-            @Override
-            public int compare(Story story1, Story story2) {
-                return story1.getName().compareTo(story2.getName());
-            }
-        }
-        );
-        return result;
-    }
 
     @Resource
     public void setStoryRepository(StoryRepository storyRepository) {

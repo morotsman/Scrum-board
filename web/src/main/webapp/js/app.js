@@ -8,6 +8,7 @@ define([
 	'adminControllers',
 	'menuControllers',
 	'teamOverviewControllers',
+	'planningControllers',
 	'angularRoute',
         'ngResource',
         'ui_bootstrap',
@@ -27,7 +28,8 @@ define([
                         'ngResource',
                         'ui.bootstrap',
                         'ngGrid',
-                        'myApp.teamOverviewControllers'
+                        'myApp.teamOverviewControllers',
+                        'myApp.planningControllers'
                        
 		]);
 });

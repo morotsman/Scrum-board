@@ -197,11 +197,6 @@ define(['angular','_'], function() {
 
 
 
-    adminControllers.controller('BoardController', ['$scope', function($scope) {
-
-
-    }]);
-
     return adminControllers;
 
 

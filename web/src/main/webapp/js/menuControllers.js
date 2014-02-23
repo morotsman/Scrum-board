@@ -26,10 +26,10 @@ define(['angular','_'], function() {
             $rootScope.$broadcast('TeamOverviewSelected');
         };
 
-        $scope.showBoard = function(teamIndex){
+        $scope.showPlanning = function(teamIndex){
             todoService.setTeamToShowBoard($scope.menuData.teams[teamIndex]);
-            $location.url('/BoardView');
-            $rootScope.$broadcast('TeamBoardSelected');
+            $location.url('/PlanningView');
+            $rootScope.$broadcast('PlanningSelected');
         }
 
         var loadTeams = function(){

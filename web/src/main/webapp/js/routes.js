@@ -22,20 +22,24 @@ define(['angular', 'app'], function(angular, app) {
             controller: 'TeamOverviewController'
         });
 
-		$routeProvider.when('/BoardView', {
-            templateUrl: 'partials/Board.html',
-            controller: 'BoardController'
+		$routeProvider.when('/PlanningView', {
+            templateUrl: 'partials/Planning.html',
+            controller: 'PlanningController'
         });
 
 		$routeProvider.otherwise({redirectTo: '/PersonalView'});
 	}]).run(function($rootScope, $location, todoService) {
 
-	    if(todoService.getTeamToOverview() === undefined){
-	       $location.path( "/PersonalView" );
-	    }
-	    if(todoService.getTeamToShowBoard() === undefined){
-            $location.path( "/PersonalView" );
-        }
+            $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+                if(next.templateUrl === "partials/TeamOverview.html" && todoService.getTeamToOverview() === undefined){
+                   $location.path( "/PersonalView" );
+                }
+                if(next.templateUrl === "partials/Planning.html" && todoService.getTeamToShowBoard() === undefined){
+                    $location.path( "/PersonalView" );
+                }
+            });
+
+
     });
 
 });

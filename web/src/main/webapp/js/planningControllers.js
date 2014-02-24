@@ -13,6 +13,8 @@ define(['angular','_'], function() {
 
         $scope.planningData.team = todoService.getTeamToShowBoard();
 
+        $scope.planningData.backlog = {name:"Backlog", stories:[]};
+
 
         var teamChanged = function(){
             $scope.planningData.team = todoService.getTeamToShowBoard();
@@ -27,7 +29,6 @@ define(['angular','_'], function() {
 
         var sprintsLoaded = function(data){
             $scope.planningData.sprints = data.sprints;
-            $scope.planningData.sprints.push({name:"Backlog", stories:[]});
             _.each($scope.planningData.sprints, function(sprint){
                 loadStories(sprint);
             });
@@ -35,6 +36,12 @@ define(['angular','_'], function() {
 
         var loadSprints = function(){
             sprintDao.getSprints($scope.planningData.team, sprintsLoaded, failure);
+        };
+
+        var loadBacklog = function(){
+            storyDao.getStories($scope.planningData.team, function(data){
+                $scope.planningData.backlog.stories = data.stories;
+            }, failure);
         };
 
         $scope.addSprint = function(){
@@ -65,29 +72,37 @@ define(['angular','_'], function() {
 
 
         var loadStories = function(sprint){
-            if(sprint.name === "Backlog"){
-                storyDao.getStories($scope.planningData.team, function(data){
-                    sprint.stories = data.stories;
-                }, failure);
-            }
 
         };
 
         $scope.addStory = function(index){
-            alert("add story for: " + $scope.planningData.sprints[index].name);
             var modalInstance = $modal.open({
                 templateUrl: 'partials/createStory.html',
                 controller: 'CreateStoryDialogController'
             });
 
-            modalInstance.result.then(function(presentation) {
+            modalInstance.result.then(function(data) {
                 loadStories($scope.planningData.sprints[index]);
             }, function() {
                 //cancel
             });
         };
 
+        $scope.addBacklogStory = function(){
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/createStory.html',
+                controller: 'CreateStoryDialogController'
+            });
+
+            modalInstance.result.then(function(data) {
+                loadBacklog();
+            }, function() {
+                //cancel
+            });
+        };
+
         loadSprints();
+        loadBacklog();
 
 
     }]);

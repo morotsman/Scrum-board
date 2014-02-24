@@ -13,11 +13,16 @@
             <div class="floatleft">
                 <article ng-repeat="sprint in planningData.sprints" class="floatleft">
                     <header>{{sprint.name}} <button ng:click="addStory($index)">Add story</button> <button ng:click="deleteSprint($index)">Delete sprint</button></header>
-                    <ul ui-sortable="planningData.sortableOptions" class="sprint stories-container" ng-model="sprint.stories">
-                        <li class="stories sortable" ng-repeat="story in sprint.stories" ng-class="sortable"> {{story.name}}</li>
+                    <ul ui-sortable="planningData.sortableOptions" class="sprint stories-container" ng-model="planningData.sprint.stories">
+                        <li class="stories sortable" ng-repeat="story in planningData.sprint.stories" ng-class="sortable"> {{story.name}}</li>
                     </ul>
                 </article>
-
+                <article class="floatleft">
+                    <header>{{backlog.name}} <button ng:click="addBacklogStory()">Add story</button></header>
+                    <ul ui-sortable="planningData.sortableOptions" class="sprint stories-container" ng-model="planningData.backlog.stories">
+                        <li class="stories sortable" ng-repeat="story in planningData.backlog.stories" ng-class="sortable"> {{story.name}}</li>
+                    </ul>
+                </article>
             </div>
 
 
